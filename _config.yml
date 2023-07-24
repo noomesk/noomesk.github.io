@@ -1,4 +1,4 @@
-title: Leaf Blog
+title: Noomesk blog
 iconURL: assets/default-icon.png
 theme: jekyll-theme-leaf
 
@@ -6,13 +6,13 @@ theme: jekyll-theme-leaf
 permalink: :slug
 
 social:
-  twitter: _SupunKavinda
-  github: SupunKavinda
+  instagram: noomesk
+  github: noomesk
 
 plugins:
  - jekyll-feed
  - jekyll-seo-tag
 
 ### comments & analytics
-hyvor_talk_website_id: 14
+hyvor_talk_website_id: https://noomesk.github.io/
 google_analytics: UA-NNNNNNNN-N
