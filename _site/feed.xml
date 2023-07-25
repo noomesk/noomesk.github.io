@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-24T11:03:19-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Noomesk blog</title><entry><title type="html">My First Article</title><link href="http://localhost:4000/my-first-article" rel="alternate" type="text/html" title="My First Article" /><published>2023-07-24T00:00:00-05:00</published><updated>2023-07-24T00:00:00-05:00</updated><id>http://localhost:4000/my-first-article</id><content type="html" xml:base="http://localhost:4000/my-first-article"><![CDATA[<p>Hola, soy frontend developer y analista en ciberseguridad!
+Acá encontrarás un poco de mis habilidades, retos de hacking ético, algunas páginas web y un repositorio de las materias de mi carrera, que espero sean de gran ayuda si es que lo necesitas. Como ya saben el conocimiento debe ser siempre una causa libre, así que para eso estoy aquí, para contribuir desde mi campo a que todos puedan tener un libre acceso a el conocimiento. 
+Tirame ya tio!!</p>
+
+<p>Aquí hay un ejemplo de algo sencillo que puedes implementar con ruby! :</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+
+<p>Ahora aquí, te comparto algo sencillo para probar:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#!/usr/bin/python3
+</span><span class="kn">import</span> <span class="nn">requests</span> 
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"http://localhost:4000"</span><span class="p">)</span></code></pre></figure>
+
+<p>Saludos, espero te haya gustado Siéntete libre de contactarme si necesitas ayuda o tienes algo que aportar al blog.</p>]]></content><author><name>Angie Plazas</name></author><summary type="html"><![CDATA[Hola, soy frontend developer y analista en ciberseguridad! Acá encontrarás un poco de mis habilidades, retos de hacking ético, algunas páginas web y un repositorio de las materias de mi carrera, que espero sean de gran ayuda si es que lo necesitas. Como ya saben el conocimiento debe ser siempre una causa libre, así que para eso estoy aquí, para contribuir desde mi campo a que todos puedan tener un libre acceso a el conocimiento. Tirame ya tio!!]]></summary></entry></feed>
