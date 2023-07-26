@@ -2,11 +2,13 @@
 layout: post
 author: Angie Plazas 
 ---
-Hola, soy frontend developer y analista en ciberseguridad!
-Acá encontrarás un poco de mis habilidades, retos de hacking ético, algunas páginas web y un repositorio de las materias de mi carrera, que espero sean de gran ayuda si es que lo necesitas. Como ya saben el conocimiento debe ser siempre una causa libre, así que para eso estoy aquí, para contribuir desde mi campo a que todos puedan tener un libre acceso a el conocimiento. 
-Tirame ya tio!! 
+Hola humano! 
+Soy Angie, Fronend developer. 
+Aquí encontrarás un poco de mis intereses y experiencia. Además de ser desarrolladora también soy analista en ciberseguridad, así que un espacio de este pequeño lugar está dedicado a resolver máquinas de hacking ético. 
 
-Aquí hay un ejemplo de algo sencillo que puedes implementar con ruby! :
+**Esto es una prueba (hasta ahora estoy personalizando esta página**
+
+* Aquí hay un ejemplo de algo sencillo que puedes implementar con ruby! :
 
 {% highlight ruby %}
 def print_hi(name)
@@ -17,7 +19,7 @@ print_hi('Tom')
 {% endhighlight %}
 
 
-Ahora aquí, te comparto algo sencillo para probar: 
+* Ahora aquí, te comparto algo sencillo para probar como indexar sintaxis de python jeje: 
 {%highlight python %}
 
 #!/usr/bin/python3
