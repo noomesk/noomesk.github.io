@@ -1,6 +1,6 @@
 title: Noomesk blog
 iconURL: assets/default-icon.png
-theme: jekyll-theme-leaf
+# theme: jekyll-theme-leaf   (lo volvi un comentario a ver si así si funciona xd)
 remote_theme: hydecorp/hydejack@v9
 
 # for a clean URL
