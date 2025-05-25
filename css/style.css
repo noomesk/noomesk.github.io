@@ -89,4 +89,15 @@ body::before {
     background-size: 20px 20px;
     z-index: -1;
     pointer-events: none;
+    /* ---- [probando probando anshi es genial ---- */
+/* Efecto "Fuego Hacker" para títulos */
+@keyframes fire {
+    0% { text-shadow: 0 0 5px #0f0; }
+    50% { text-shadow: 0 0 20px #ff00aa, 0 0 10px #0f0; }
+    100% { text-shadow: 0 0 5px #0f0; }
+}
+.highlight.fire {
+    animation: fire 2s infinite;
+    display: inline-block; /* Para que funcione mejor */
+}
 }
