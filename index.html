@@ -1,58 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>noomesk ~/portfolio</title>
-    <style>
-        /* CSS INTEGRADO (para evitar problemas de carga) */
-        body {
-            margin: 0;
-            padding: 20px;
-            background: #000 !important;
-            color: #0f0 !important;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh;
-        }
-        .terminal {
-            max-width: 800px;
-            margin: 0 auto;
-            border: 1px solid #0f0;
-            padding: 20px;
-            background: rgba(0, 15, 0, 0.2);
-        }
-        h1, h2, h3 {
-            color: #0f0;
-        }
-        h1::before {
-            content: "> ";
-        }
-        .project {
-            margin: 10px 0;
-            padding-left: 10px;
-            border-left: 2px solid #0f0;
-        }
-        .project:hover {
-            background: rgba(0, 255, 0, 0.1);
-        }
-        /* Efecto cursor */
-        .blink {
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css"> <!-- Ruta exacta -->
+    <link rel="icon" href="favicon.ico"> <!-- Opcional -->
 </head>
 <body>
     <div class="terminal">
-        <h1>> whoami</h1>
-        <p>¡Hola! Soy <span class="blink">_</span></p>
-        
-        <h1>> ls proyectos/</h1>
-        <div class="project">Proyecto 1</div>
-        
-        <h1>> cat contacto.txt</h1>
-        <p>Email: tu@email.com</p>
+        <!-- Encabezado estilo hacker -->
+        <header>
+            <pre class="ascii-art">
+  _____ _     _      ___ _ _             
+ |_   _| |_  |_|___ |  _|_| |___ ___ ___ 
+   | | |   | | | . ||  _| | | -_|_ -|_ -|
+   |_| |_|_|_| |___||_| |_|_|___|___|___|
+            </pre>
+            <h1>> Hola, soy <span class="highlight">noomesk</span></h1>
+            <p class="typing">Desarrolladora frontend <span class="blink">_</span></p>
+        </header>
+
+        <!-- Sección "whoami" -->
+        <section class="command">
+            <p>> whoami</p>
+            <p>Soy una desarrolladora frontend con experiencia en [tus habilidades].</p>
+        </section>
+
+        <!-- Proyectos -->
+        <section class="command">
+            <p>> ls proyectos/</p>
+            <div class="projects">
+                <a href="#" class="project-link">Proyecto 1</a>
+                <a href="#" class="project-link">Proyecto 2</a>
+            </div>
+        </section>
+
+        <!-- Contacto -->
+        <section class="command">
+            <p>> cat contacto.txt</p>
+            <p>Email: <a href="mailto:tu@email.com">tu@email.com</a></p>
+            <p>GitHub: <a href="https://github.com/noomesk">@noomesk</a></p>
+        </section>
     </div>
+    <script src="js/main.js"></script> <!-- Opcional -->
 </body>
 </html>
