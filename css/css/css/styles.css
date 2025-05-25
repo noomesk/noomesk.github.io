@@ -1,0 +1,16 @@
+section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+section.active {
+    display: block;
+    opacity: 1;
+}
+.project-card {
+    transition: transform 0.3s, border-color 0.3s;
+}
+.project-card:hover {
+    transform: translateY(-5px);
+    border-left: 2px solid #0f0; /* Verde hacker */
+}
