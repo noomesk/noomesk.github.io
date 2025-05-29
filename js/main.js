@@ -1,23 +1,86 @@
-// ===== ESTOY DOCUENTANDO TODO INLINE XQ EL OTRO DIA VINE A VER QUÉ CARAJOS HABÍA HECHO Y MEPERDÍ =====
-// ===== NAVEGACIÓN PRINCIPAL (Menú de secciones) =====
-document.querySelectorAll('.menu a').forEach(link => {
+// ===== TYPEWRITER DEL HEADER (Mantén este tal cual) =====
+const phrases = [
+    "Automatización con Python",
+    "Bioinformática",
+    "Desarrollo Web",
+    "Ciberseguridad"
+];
+let currentPhrase = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 150;
+
+function typeHeader() {
+    const typingElement = document.querySelector('.typing');
+    if (!typingElement) return;
+
+    const currentText = phrases[currentPhrase];
+    
+    if (!isDeleting && charIndex <= currentText.length) {
+        typingElement.textContent = currentText.substring(0, charIndex) + '<span class="blink">_</span>';
+        charIndex++;
+        typingSpeed = 100;
+    } else if (isDeleting && charIndex >= 0) {
+        typingElement.textContent = currentText.substring(0, charIndex) + '<span class="blink">_</span>';
+        charIndex--;
+        typingSpeed = 50;
+    } else {
+        isDeleting = !isDeleting;
+        if (!isDeleting) {
+            currentPhrase = (currentPhrase + 1) % phrases.length;
+        }
+        typingSpeed = isDeleting ? 1500 : 500;
+    }
+    setTimeout(typeHeader, typingSpeed);
+}
+
+// ===== ANIMACIONES AL SCROLL (Nueva versión mejorada) =====
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Efecto parallax para el fondo
+            if (entry.target.classList.contains('parallax-bg')) {
+                const speed = parseFloat(entry.target.getAttribute('data-speed')) || 0.3;
+                const yOffset = window.scrollY * speed;
+                entry.target.style.transform = `translateY(${yOffset}px)`;
+            }
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.hidden').forEach((el) => {
+    observer.observe(el);
+});
+
+// ===== EFECTO HOVER "HACKER" (Nuevo) =====
+document.querySelectorAll('.hacker-hover').forEach((link) => {
+    link.addEventListener('mouseenter', () => {
+        link.style.textShadow = '0 0 10px #00ff00';
+    });
+    link.addEventListener('mouseleave', () => {
+        link.style.textShadow = 'none';
+    });
+});
+
+// ===== NAVEGACIÓN PRINCIPAL (Mantén tu versión con scroll suave) =====
+document.querySelectorAll('.menu a').forEach((link) => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-        const targetId = link.getAttribute('href'); // Ej: "#bioinformatics"
+        const targetId = link.getAttribute('href');
         
-        // 1. Removí clase 'active' de todas las secciones y pestañas del menúsito
-        document.querySelectorAll('section').forEach(section => {
+        document.querySelectorAll('section').forEach((section) => {
             section.classList.remove('active-section');
         });
-        document.querySelectorAll('.menu a').forEach(item => {
+        document.querySelectorAll('.menu a').forEach((item) => {
             item.classList.remove('active-tab');
         });
         
-        // 2. Muestra sección clickeada y marcar pestaña como activa
         document.querySelector(targetId).classList.add('active-section');
         link.classList.add('active-tab');
 
-        // 3. Desplazamiento suave (animación) ejj
+        // Scroll suave (¡esto es tuyo, no lo cambies!)
         document.querySelector(targetId).scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -25,108 +88,52 @@ document.querySelectorAll('.menu a').forEach(link => {
     });
 });
 
-// ===== PESTAÑAS DE ARCHIVOS (Para actualizar las terminales de bioinformática/web-dev/cybersecurity) =====
-document.querySelectorAll('.tab-bar .tab').forEach(tab => {
+// ===== PESTAÑAS DE ARCHIVOS (Mantén tu código original) =====
+document.querySelectorAll('.tab-bar .tab').forEach((tab) => {
     tab.addEventListener('click', function() {
         const tabBar = this.parentElement;
-        
-        // 1. Removí 'active' de todas las pestañas del mismo grupo
-        tabBar.querySelectorAll('.tab').forEach(t => {
+        tabBar.querySelectorAll('.tab').forEach((t) => {
             t.classList.remove('active');
         });
-        
-        // 2. Marqué pestaña clickeada como activa
         this.classList.add('active');
-        
-        // 3. (Opcional) Aquí se puede cambiar el contenido del archivo visible
-        // Z.B Si tengo múltiples .file-content en un terminal
     });
 });
 
-// ===== EFECTO TYPEWRITER (Texto animaditooop en el header) =====
-const phrases = [
-    "Automatización con Python",
-    "Bioinformática",
-    "Desarrollo Web",
-    "Ciberseguridad"  // Nueva frase añadida xq no estaba aah
-];
-let currentPhrase = 0;
-let charIndex = 0;
-let isDeleting = false;
-let typingSpeed = 150;
-
-function typeWriter() {
-    const typingElement = document.querySelector('.typing');
-    if (!typingElement) return;
-
-    const currentText = phrases[currentPhrase];
-    
-    // Escribir o borrar
-    if (!isDeleting && charIndex <= currentText.length) {
-        typingElement.textContent = currentText.substring(0, charIndex) + '<span class="blink">_</span>';
-        charIndex++;
-        typingSpeed = 100; // Velocidad escritura
-    } else if (isDeleting && charIndex >= 0) {
-        typingElement.textContent = currentText.substring(0, charIndex) + '<span class="blink">_</span>';
-        charIndex--;
-        typingSpeed = 50; // Velocidad borrado (más rápida)
-    } else {
-        // Cambia entre modos
-        isDeleting = !isDeleting;
-        if (!isDeleting) {
-            currentPhrase = (currentPhrase + 1) % phrases.length;
-        }
-        typingSpeed = isDeleting ? 1500 : 500; // Pausa entre frases
-    }
-
-    setTimeout(typeWriter, typingSpeed);
-}
-
-// Inicia el efecto al cargar la página juasss
-document.addEventListener('DOMContentLoaded', () => {
-    typeWriter();
-    
-    // Debug (puede sser opcional, pero soy la diosa del debugging)
-    console.log("Scripts cargados correctamente");
-    
-    // Activa la primera sección por defecto
-    const defaultSection = document.querySelector('#bioinformatics') || document.querySelector('section');
-    if (defaultSection) defaultSection.classList.add('active-section');
-});
-
-// ===== EFECTO HOVER PARA TARJETAS DE PROYECTOS, MUY NICEE =====
-document.querySelectorAll('.project-card').forEach(card => {
+// ===== HOVER DE PROJECT CARDS (Mantén tu efecto) =====
+document.querySelectorAll('.project-card').forEach((card) => {
     card.addEventListener('mouseenter', () => {
         card.style.transform = 'translateY(-5px)';
         card.style.boxShadow = '0 10px 20px rgba(0, 255, 0, 0.3)';
     });
-    
     card.addEventListener('mouseleave', () => {
         card.style.transform = '';
         card.style.boxShadow = '';
     });
 });
-// Animaciones al hacer scrollitooOOOOOUOOOOO
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    } else {
-      entry.target.classList.remove('visible'); // Opcional: reset al salir
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', () => {
+    typeHeader(); // Inicia tu typewriter del header
+    
+    // Typewriter adicional para contacto (nuevo)
+    const contactTitle = document.getElementById('typewriter-title');
+    if (contactTitle) {
+        const typeWriter = (element, text, speed = 50) => {
+            let i = 0;
+            element.textContent = '';
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        };
+        typeWriter(contactTitle, "> cat contacto.txt");
     }
-  });
-}, { threshold: 0.1 }); // Sensibilidad del trigger
-
-// Aplica a todos los elementos con clase "hidden"
-document.querySelectorAll('.hidden').forEach((el) => {
-  observer.observe(el);
-});
-
-// Efecto parallax (para imágenes con clase "parallax")
-window.addEventListener('scroll', () => {
-  document.querySelectorAll('.parallax').forEach((el) => {
-    const speed = parseFloat(el.getAttribute('data-speed')) || 0.3;
-    const yPos = -window.scrollY * speed;
-    el.style.transform = `translateY(${yPos}px)`;
-  });
+    
+    // Activa la primera sección por defecto (tu código)
+    const defaultSection = document.querySelector('#bioinformatics') || document.querySelector('section');
+    if (defaultSection) defaultSection.classList.add('active-section');
 });
