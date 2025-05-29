@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>noomesk | Python Automation + Bioinformática + Web Dev</title>
+    <title>noomesk | Python Automation + Bioinformática + Web Dev + Ciberseguridad</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern-styles.css"> <!-- Nuevas reglas -->
+    <link rel="stylesheet" href="css/modern-styles.css">
     <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
@@ -18,49 +18,137 @@
    | | |   | | | . ||  _| | | -_|_ -|_ -|
    |_| |_|_|_| |___||_| |_|_|___|___|___|
             </pre>
-            <h1 class="highlight fire"> whoami</h1> <!-- Efecto de fueguitooo jeje -->
-            <p class="typing">Automatización con Python · Bioinformática · Desarrollo Web<span class="blink">_</span></p>
+            <h1 class="highlight fire"> whoami</h1>
+            <p class="typing">Automatización · Bioinformática · Web Dev · Ciberseguridad<span class="blink">_</span></p>
         </header>
 
-        <!-- Menú de navegación -->
+        <!-- Menú de navegación mejorado -->
         <nav class="command">
-            <p>> cd /habilidades</p>
+            <p>> cd /proyectos</p>
             <ul class="menu">
                 <li><a href="#automation">~/automation</a></li>
-                <li><a href="#bioinformatics">~/bioinformatics</a></li>
+                <li><a href="#bioinformatics" class="active-tab">~/bioinformatics</a></li>
                 <li><a href="#web-dev">~/web-dev</a></li>
+                <li><a href="#cybersecurity">~/cybersecurity</a></li>
                 <li><a href="#contacto">~/contacto</a></li>
             </ul>
         </nav>
 
-        <!-- Sección Proyectos -->
+        <!-- Sección Bioinformática (con pestañas de archivos) -->
+        <section id="bioinformatics" class="project-section active-section">
+            <h2>> ls bioinformatics/</h2>
+            <div class="terminal-file-viewer">
+                <div class="tab-bar">
+                    <span class="tab active">genome_analysis.py</span>
+                    <span class="tab">report.ipynb</span>
+                    <span class="tab">data/</span>
+                </div>
+                <div class="file-content">
+                    <pre><code># Análisis de secuencias FASTQ
+import Bio.SeqIO as bio
+
+def analyze_genome(file_path):
+    sequences = list(bio.parse(file_path, "fastq"))
+    gc_content = sum(
+        (seq.seq.count('G') + seq.seq.count('C')) / len(seq.seq) 
+        for seq in sequences
+    ) / len(sequences)
+    return {"samples": len(sequences), "avg_gc": gc_content}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Web Dev -->
+        <section id="web-dev" class="project-section">
+            <h2>> ls web-dev/</h2>
+            <div class="terminal-file-viewer">
+                <div class="tab-bar">
+                    <span class="tab active">portfolio.js</span>
+                    <span class="tab">styles.css</span>
+                    <span class="tab">index.html</span>
+                </div>
+                <div class="file-content">
+                    <pre><code>// Efectos interactivos con neón
+const cards = document.querySelectorAll('.project-card');
+cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.boxShadow = '0 0 15px #0f0, 0 0 30px rgba(0, 255, 0, 0.4)';
+    });
+});</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nueva Sección Ciberseguridad -->
+        <section id="cybersecurity" class="project-section">
+            <h2>> ls cybersecurity/</h2>
+            <div class="terminal-file-viewer">
+                <div class="tab-bar">
+                    <span class="tab active">pentest.sh</span>
+                    <span class="tab">report.md</span>
+                    <span class="tab">logs/</span>
+                </div>
+                <div class="file-content">
+                    <pre><code># Script de escaneo de vulnerabilidades
+#!/bin/bash
+echo "Iniciando escaneo Nmap..."
+nmap -sV -T4 -p- $1 -oN scan_results.txt
+
+# Detección de CVE conocidos
+while read -r line; do
+    if [[ $line == *"open"* ]]; then
+        port=$(echo $line | cut -d'/' -f1)
+        service=$(echo $line | awk '{print $3}')
+        echo "[!] Potencial vulnerabilidad en puerto $port ($service)"
+    fi
+done < scan_results.txt</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Automatización (tu contenido original) -->
         <section id="automation" class="project-section">
             <h2>> ls automation/</h2>
             <div class="projects-grid">
-                <a href="projects/automation/instagram-bot.py" class="project-card">
+                <a href="projects/automation/instagram-bot.py" class="project-card neon-hover">
                     <h3>🤖 Instagram Bot</h3>
                     <p>Automatización de interacciones con Selenium y Python.</p>
                     <span class="tech-tag">Python</span>
                     <span class="tech-tag">Selenium</span>
                 </a>
-                <!-- Añade más proyectos aquí -->
             </div>
         </section>
 
         <!-- Sección Contacto -->
         <section id="contacto" class="command">
             <h2>> cat contacto.txt</h2>
-            <p>Email: <a href="mailto:tu@email.com">noomesk@gmail.com</a></p>
-            <p>GitHub: <a href="https://github.com/noomesk">@noomesk</a></p>
-            <p>LinkedIn: <a href="#">https://www.linkedin.com/in/angie-paola-plazas-a008202a0/</a></p>
+            <p>Email: <a href="mailto:noomesk@gmail.com" class="neon-link">noomesk@gmail.com</a></p>
+            <p>GitHub: <a href="https://github.com/noomesk" class="neon-link">@noomesk</a></p>
+            <p>LinkedIn: <a href="#" class="neon-link">Angie Paola Plazas</a></p>
         </section>
     </div>
+
     <script src="js/main.js"></script>
-    <!-- Para debuggear jej -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log("¡JS cargado!");
+    // Nueva funcionalidad para pestañas
+    document.querySelectorAll('.menu a').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Oculta todas las secciones
+            document.querySelectorAll('.project-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            // Muestra la seleccionada
+            const target = document.querySelector(tab.getAttribute('href'));
+            target.classList.add('active-section');
+            
+            // Actualiza pestaña activa en el menú
+            document.querySelectorAll('.menu a').forEach(item => {
+                item.classList.remove('active-tab');
+            });
+            tab.classList.add('active-tab');
+        });
     });
-</script>
+    </script>
 </body>
 </html>
