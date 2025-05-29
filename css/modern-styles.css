@@ -100,3 +100,48 @@
     from { opacity: 0; }
     to { opacity: 1; }
 }
+/* Contenedor del archivo */
+.file-content {
+    background-color: #001100;
+    border: 1px solid #005500;
+    border-radius: 0 0 4px 4px;
+    padding: 15px;
+    margin-top: -1px; /* Para unir con las pestañas */
+    overflow-x: auto;
+}
+
+/* Texto dentro de pre/code */
+.file-content pre {
+    margin: 0;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    tab-size: 4;
+}
+
+/* Pestañas de archivos */
+.tab-bar {
+    display: flex;
+    border-bottom: 1px solid #005500;
+    background: #001a00;
+    padding: 5px 10px 0;
+    border-radius: 4px 4px 0 0;
+}
+
+.tab {
+    padding: 5px 12px;
+    background: #002200;
+    border: 1px solid #005500;
+    border-bottom: none;
+    margin-right: 5px;
+    cursor: pointer;
+    color: #00cc00;
+    font-family: monospace;
+    border-radius: 3px 3px 0 0;
+}
+
+.tab.active {
+    background: #003300;
+    color: #00ff00;
+    border-color: #00ff00;
+}
