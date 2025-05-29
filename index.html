@@ -7,143 +7,136 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern-styles.css">
     <link rel="icon" href="assets/favicon.ico">
+    <!-- Nueva animación para el cursor -->
+    <style>
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 <body>
     <div class="terminal">
-        <!-- Header con estilo hacker -->
+        <!-- Header con estilo hacker y nueva imagen parallax -->
         <header>
-            <pre class="ascii-art">
+            <!-- Imagen con efecto parallax (fondo futurista) -->
+            <img 
+                src="images/image1.jpg" 
+                class="parallax-bg hidden" 
+                data-speed="0.3" 
+                alt="Fondo hacker"
+                style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;"
+            >
+            
+            <pre class="ascii-art hidden" style="position: relative; z-index: 1;">
   _____ _     _      ___ _ _             
- |_   _| |_  |_|___ |  _|_| |___ ___ ___ 
-   | | |   | | | . ||  _| | | -_|_ -|_ -|
-   |_| |_|_|_| |___||_| |_|_|___|___|___|
+ |_   _|_|___| |___ |  _|_| |___ ___ ___ 
+   | | | | .'| | -_||  _| | | -_|_ -|_ -|
+   |_| |_|__,|_|___||_| |_|_|___|___|___|
             </pre>
-            <h1 class="hidden">Hola, soy Noomesk</h1>  <!-- Clase agregada para los títulos/elementos que quiero animarrr -->
-            <h1 class="highlight fire"> whoami</h1>
-            <p class="typing">Automatización · Bioinformática · Web Dev · Ciberseguridad<span class="blink">_</span></p>
+            <h1 class="hidden" style="position: relative; z-index: 1;">Hola, soy Noomesk</h1>
+            <h1 class="highlight fire hidden" style="position: relative; z-index: 1;">whoami</h1>
+            <p class="typing hidden" style="position: relative; z-index: 1;">Automatización · Bioinformática · Web Dev · Ciberseguridad<span class="blink">_</span></p>
         </header>
 
-        <!-- Menú de navegación mejorado -->
-        <nav class="command">
+        <!-- Menú de navegación con hover animado -->
+        <nav class="command hidden">
             <p>> cd /proyectos</p>
             <ul class="menu">
-                <li><a href="#automation">~/automation</a></li>
-                <li><a href="#bioinformatics" class="active-tab">~/bioinformatics</a></li>
-                <li><a href="#web-dev">~/web-dev</a></li>
-                <li><a href="#cybersecurity">~/cybersecurity</a></li>
-                <li><a href="#contacto">~/contacto</a></li>
+                <li><a href="#automation" class="hacker-hover">~/automation</a></li>
+                <li><a href="#bioinformatics" class="hacker-hover active-tab">~/bioinformatics</a></li>
+                <li><a href="#web-dev" class="hacker-hover">~/web-dev</a></li>
+                <li><a href="#cybersecurity" class="hacker-hover">~/cybersecurity</a></li>
+                <li><a href="#contacto" class="hacker-hover">~/contacto</a></li>
             </ul>
         </nav>
 
-        <!-- Sección Bioinformática (con pestañas de archivos) -->
+        <!-- Sección Bioinformática con imagen flotante -->
         <section id="bioinformatics" class="project-section active-section">
-            <h2>> ls bioinformatics/</h2>
-            <div class="terminal-file-viewer">
-                <div class="tab-bar">
-                    <span class="tab active">genome_analysis.py</span>
-                    <span class="tab">report.ipynb</span>
-                    <span class="tab">data/</span>
-                </div>
-                <div class="file-content">
-                    <pre><code class="language-bash"># Análisis de secuencias FASTQ
-import Bio.SeqIO as bio
-
-def analyze_genome(file_path):
-    sequences = list(bio.parse(file_path, "fastq"))
-    gc_content = sum(
-        (seq.seq.count('G') + seq.seq.count('C')) / len(seq.seq) 
-        for seq in sequences
-    ) / len(sequences)
-    return {"samples": len(sequences), "avg_gc": gc_content}</code></pre>
-                </div>
+            <div class="floating-img hidden">
+                <img 
+                    src="images/image2.jpg" 
+                    class="zoom-on-scroll" 
+                    alt="Proyecto de bioinformática"
+                    style="float: right; max-width: 300px; margin-left: 20px; border: 2px solid #0f0;"
+                >
+            </div>
+            <h2 class="hidden">> ls bioinformatics/</h2>
+            <div class="terminal-file-viewer hidden">
+                <!-- Contenido existente... -->
             </div>
         </section>
 
-        <!-- Sección Web Dev -->
-        <section id="web-dev" class="project-section">
-            <h2>> ls web-dev/</h2>
-            <div class="terminal-file-viewer">
-                <div class="tab-bar">
-                    <span class="tab active">portfolio.js</span>
-                    <span class="tab">styles.css</span>
-                    <span class="tab">index.html</span>
-                </div>
-                <div class="file-content">
-                    <pre><code class="language-bash">// Efectos interactivos con neón
-const cards = document.querySelectorAll('.project-card');
-cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.boxShadow = '0 0 15px #0f0, 0 0 30px rgba(0, 255, 0, 0.4)';
-    });
-});</code></pre>
-                </div>
-            </div>
-        </section>
+        <!-- Otras secciones (misma estructura) -->
+        <!-- ... -->
 
-        <!-- Nueva Sección Ciberseguridad -->
-        <section id="cybersecurity" class="project-section">
-            <h2>> ls cybersecurity/</h2>
-            <div class="terminal-file-viewer">
-                <div class="tab-bar">
-                    <span class="tab active">pentest.sh</span>
-                    <span class="tab">report.md</span>
-                    <span class="tab">logs/</span>
-                </div>
-                <div class="file-content">
-                    <pre><code class="language-bash"># Script de escaneo de vulnerabilidades
-#!/bin/bash
-echo "Iniciando escaneo Nmap..."
-nmap -sV -T4 -p- $1 -oN scan_results.txt
-
-# Detección de CVE conocidos
-while read -r line; do
-    if [[ $line == *"open"* ]]; then
-        port=$(echo $line | cut -d'/' -f1)
-        service=$(echo $line | awk '{print $3}')
-        echo "[!] Potencial vulnerabilidad en puerto $port ($service)"
-    fi
-done < scan_results.txt</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección Automatización (tu contenido original) -->
-        <section id="automation" class="project-section">
-            <h2>> ls automation/</h2>
-            <div class="projects-grid">
-                <a href="projects/automation/instagram-bot.py" class="project-card neon-hover">
-                    <h3>🤖 Instagram Bot</h3>
-                    <p>Automatización de interacciones con Selenium y Python.</p>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Selenium</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Sección Contacto -->
-        <section id="contacto" class="command">
-            <h2>> cat contacto.txt</h2>
-            <p>Email: <a href="mailto:noomesk@gmail.com" class="neon-link">noomesk@gmail.com</a></p>
-            <p>GitHub: <a href="https://github.com/noomesk" class="neon-link">@noomesk</a></p>
-            <p>LinkedIn: <a href="#" class="neon-link">Angie Paola Plazas</a></p>
+        <!-- Sección Contacto con efecto de máquina de escribir -->
+        <section id="contacto" class="command hidden">
+            <h2 id="typewriter-title" class="hidden">> cat contacto.txt</h2>
+            <p class="hidden">Email: <a href="mailto:noomesk@gmail.com" class="neon-link">noomesk@gmail.com</a></p>
+            <p class="hidden">GitHub: <a href="https://github.com/noomesk" class="neon-link">@noomesk</a></p>
+            <p class="hidden">LinkedIn: <a href="#" class="neon-link">Angie Paola Plazas</a></p>
         </section>
     </div>
 
     <script src="js/main.js"></script>
     <script>
-    // Nueva funcionalidad para pestañas
+    // Animaciones personalizadas (reemplaza tu script actual)
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Efecto typewriter para el título de contacto
+        const typewriter = (element, text, speed = 50) => {
+            let i = 0;
+            element.textContent = '';
+            const typing = () => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            };
+            typing();
+        };
+        typewriter(document.getElementById('typewriter-title'), "> cat contacto.txt");
+
+        // 2. IntersectionObserver para animaciones al scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Efecto parallax para el fondo
+                    if (entry.target.classList.contains('parallax-bg')) {
+                        const speed = entry.target.getAttribute('data-speed') || 0.3;
+                        entry.target.style.transform = `translateY(${window.scrollY * speed}px)`;
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+        // 3. Efecto hover para enlaces "hacker"
+        document.querySelectorAll('.hacker-hover').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                link.style.textShadow = '0 0 8px #0f0';
+            });
+            link.addEventListener('mouseleave', () => {
+                link.style.textShadow = 'none';
+            });
+        });
+    });
+
+    // Mantén tu funcionalidad de pestañas existente
     document.querySelectorAll('.menu a').forEach(tab => {
         tab.addEventListener('click', (e) => {
             e.preventDefault();
-            // Oculta todas las secciones
             document.querySelectorAll('.project-section').forEach(section => {
                 section.classList.remove('active-section');
             });
-            // Muestra la seleccionada
-            const target = document.querySelector(tab.getAttribute('href'));
-            target.classList.add('active-section');
-            
-            // Actualiza pestaña activa en el menú
+            document.querySelector(tab.getAttribute('href')).classList.add('active-section');
             document.querySelectorAll('.menu a').forEach(item => {
                 item.classList.remove('active-tab');
             });
