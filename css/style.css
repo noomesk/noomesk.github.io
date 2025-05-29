@@ -44,6 +44,10 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4);
 }
+.project-card h3 {
+    color: #0f0;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
 /* Efectos hacker */
 .highlight { color: #0f0; }
 .blink { animation: blink 1s infinite; }
