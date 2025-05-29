@@ -13,13 +13,22 @@ body {
     padding: 20px;
 }
 
-/* Terminal style */
+/* Terminal style agregué neon y sombritas */
 .terminal {
     max-width: 800px;
     margin: 0 auto;
     border: 1px solid #0f0;
     padding: 20px;
     background: rgba(0, 15, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5), 
+                0 0 20px rgba(0, 255, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.terminal:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.8), 
+                0 0 25px rgba(0, 255, 0, 0.5);
+}
 }
 
 /* Efectos hacker */
