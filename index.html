@@ -89,7 +89,7 @@ cards.forEach(card => {
                     <span class="tab">logs/</span>
                 </div>
                 <div class="file-content">
-                    <pre><code># Script de escaneo de vulnerabilidades
+                    <pre><code class="language-bash"># Script de escaneo de vulnerabilidades
 #!/bin/bash
 echo "Iniciando escaneo Nmap..."
 nmap -sV -T4 -p- $1 -oN scan_results.txt
