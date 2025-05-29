@@ -102,3 +102,15 @@ body::before {
     animation: fire 2s infinite;
     display: inline-block;
 }
+
+.typing {
+    border-right: 2px solid #0f0;
+    overflow: hidden;
+    display: inline-block; /* Importante para el cursor */
+    animation: blink-caret 0.75s step-end infinite;
+}
+/* Agregado para el typewriter */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #0f0; }
+}
