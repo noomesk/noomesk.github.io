@@ -8,8 +8,7 @@
 body {
     background: #000 !important;
     color: #0f0 !important;
-    /* font-family: 'Courier New', monospace;*/
-    font-family: 'IBM Plex Mono', monospace; /* Más limpia */
+    font-family: 'IBM Plex Mono', monospace;
     line-height: 1.6;
     padding: 20px;
 }
@@ -27,17 +26,18 @@ body {
 .highlight { color: #0f0; }
 .blink { animation: blink 1s infinite; }
 @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-/* ----- [Jiji mod 2 después de los estilos base] ----- */
-/* Degradado para títulos importantes (ej: shooo wachi angie ejejaa) */
+
+/* ----- [Jiji mod 2] ----- */
+/* Degradado para títulos */
 .highlight {
     background: linear-gradient(90deg, #0f0, #00ffaa);
-    -webkit-background-clip: text;  /* Para navegadores webkit (Chrome, Safari) */
-    background-clip: text;          /* Soporte moderno */
-    color: transparent;             /* Hace el texto transparente para ver el degradado, super cute no? */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     font-weight: bold;
 }
 
-/* Degradado para botones o links especiales (opcional) */
+/* Degradado para botones */
 .project-link.special {
     background: linear-gradient(90deg, rgba(0, 255, 0, 0.3), rgba(0, 255, 170, 0.3));
     padding: 5px 10px;
@@ -75,7 +75,7 @@ body {
     .terminal { padding: 10px; }
 }
 
-/* Efecto Matrix de fondo (sutil) */
+/* Efecto Matrix de fondo */
 body::before {
     content: "";
     position: fixed;
@@ -89,7 +89,9 @@ body::before {
     background-size: 20px 20px;
     z-index: -1;
     pointer-events: none;
-    /* ---- [probando probando anshi es genial ---- */
+}
+
+/* ----- [Nuevos efectos] ----- */
 /* Efecto "Fuego Hacker" para títulos */
 @keyframes fire {
     0% { text-shadow: 0 0 5px #0f0; }
@@ -98,6 +100,5 @@ body::before {
 }
 .highlight.fire {
     animation: fire 2s infinite;
-    display: inline-block; /* Para que funcione mejor */
-}
+    display: inline-block;
 }
