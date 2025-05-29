@@ -78,3 +78,25 @@
         padding-bottom: 20px;
     }
 }
+/* Nuevo efecto para enlaces de contacto */
+.neon-link {
+    color: #0f0;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+    transition: all 0.3s ease;
+}
+.neon-link:hover {
+    text-shadow: 0 0 10px rgba(0, 255, 0, 1);
+}
+
+/* Control de secciones */
+.project-section {
+    display: none;
+}
+.project-section.active-section {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
