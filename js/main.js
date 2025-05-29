@@ -106,3 +106,27 @@ document.querySelectorAll('.project-card').forEach(card => {
         card.style.boxShadow = '';
     });
 });
+// Animaciones al hacer scrollitooOOOOOUOOOOO
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    } else {
+      entry.target.classList.remove('visible'); // Opcional: reset al salir
+    }
+  });
+}, { threshold: 0.1 }); // Sensibilidad del trigger
+
+// Aplica a todos los elementos con clase "hidden"
+document.querySelectorAll('.hidden').forEach((el) => {
+  observer.observe(el);
+});
+
+// Efecto parallax (para imágenes con clase "parallax")
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.parallax').forEach((el) => {
+    const speed = parseFloat(el.getAttribute('data-speed')) || 0.3;
+    const yPos = -window.scrollY * speed;
+    el.style.transform = `translateY(${yPos}px)`;
+  });
+});
