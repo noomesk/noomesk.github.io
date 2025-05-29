@@ -145,3 +145,22 @@
     color: #00ff00;
     border-color: #00ff00;
 }
+/* animaciones dde imagen */
+.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.parallax-bg {
+    transition: transform 0.5s ease-out !important;
+}
+.zoom-on-scroll {
+    transition: transform 0.8s ease-out;
+}
+.zoom-on-scroll.visible {
+    transform: scale(1.05);
+}
