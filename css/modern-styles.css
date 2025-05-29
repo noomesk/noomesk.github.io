@@ -1,1 +1,80 @@
+/* ===== LAYOUT MODERNO ===== */
+/* Buemno aqui estaréhaciendo algunas mejoras. Esto sobreescribe .terminal original pero mantiene efectos especiales */
+.terminal {
+    max-width: 1200px !important; /* Más ancho */
+    padding: 40px !important;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Sidebar + Contenido */
+    gap: 30px;
+    background: rgba(0, 20, 0, 0.3) !important; /* Fondo más intenso */
+    border: 1px solid rgba(0, 255, 0, 0.2) !important; /* Borde + sutil */
+    border-radius: 12px;
+}
 
+/* Sidebar estilo IDE */
+.sidebar {
+    border-right: 1px solid rgba(0, 255, 0, 0.1);
+    padding-right: 20px;
+}
+
+/* Contenido principal */
+.main-content {
+    padding: 20px;
+}
+
+/* ===== GLASSMORPHISM (Efecto vidrio) ===== */
+.project-section, .command {
+    background: rgba(15, 15, 15, 0.7) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid rgba(0, 255, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 255, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+/* ===== CARDS DE PROYECTOS MODERNAS ===== */
+.project-card {
+    background: rgba(0, 30, 0, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+}
+
+/* ===== BOTONSITOS LINDOS ===== */
+.glass-button {
+    background: rgba(0, 255, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: #0f0 !important;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.glass-button:hover {
+    background: rgba(0, 255, 0, 0.2);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .terminal {
+        grid-template-columns: 1fr;
+        padding: 20px !important;
+    }
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+        padding-right: 0;
+        padding-bottom: 20px;
+    }
+}
