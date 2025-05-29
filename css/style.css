@@ -114,3 +114,10 @@ body::before {
     from, to { border-color: transparent }
     50% { border-color: #0f0; }
 }
+/* Para secciones activas */
+section { 
+    display: none; /* Oculta todas por defecto */
+}
+section.active { 
+    display: block; /* Muestra la activa */
+}
