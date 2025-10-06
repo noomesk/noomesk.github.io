@@ -1,0 +1,19 @@
+title: Noomesk blog
+iconURL: assets/default-icon.png
+# theme: jekyll-theme-leaf   (lo volvi un comentario a ver si así si funciona xd)
+remote_theme: hydecorp/hydejack@v9
+
+# for a clean URL
+permalink: :slug
+
+social:
+  instagram: noomesk
+  github: noomesk
+
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
+
+### comments & analytics
+hyvor_talk_website_id: https://noomesk.github.io/
+google_analytics: UA-NNNNNNNN-N
