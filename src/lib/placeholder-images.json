@@ -1,0 +1,34 @@
+{
+  "placeholderImages": [
+    {
+      "id": "project-1",
+      "description": "Thumbnail for a modern e-commerce website.",
+      "imageUrl": "https://images.unsplash.com/photo-1664688708942-c77a6b5e6abc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3ZWJzaXRlJTIwZWNvbW1lcmNlfGVufDB8fHx8MTc1OTM2NzYyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "website ecommerce"
+    },
+    {
+      "id": "project-2",
+      "description": "Thumbnail for a data visualization dashboard.",
+      "imageUrl": "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkYXNoYm9hcmQlMjBkYXRhfGVufDB8fHx8MTc1OTM4MzIxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "dashboard data"
+    },
+    {
+      "id": "project-3",
+      "description": "Thumbnail for a mobile-first social media app.",
+      "imageUrl": "https://images.unsplash.com/photo-1542641728-6ca359b085f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtb2JpbGUlMjBhcHB8ZW58MHx8fHwxNzU5Mzc0MjIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mobile app"
+    },
+    {
+      "id": "project-4",
+      "description": "Thumbnail for a cybersecurity portal.",
+      "imageUrl": "https://images.unsplash.com/photo-1585900464046-f713a61424dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjeWJlcnNlY3VyaXR5JTIwcG9ydGFsfGVufDB8fHx8MTc1OTQxOTM2OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cybersecurity portal"
+    },
+    {
+      "id": "project-5",
+      "description": "Thumbnail for a bioinformatics analysis tool.",
+      "imageUrl": "https://images.unsplash.com/photo-1719163534402-ba86dcb55228?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiaW9pbmZvcm1hdGljcyUyMGFuYWx5c2lzfGVufDB8fHx8MTc1OTQxOTM2OXww&ixlib_rb-4.1.0&q=80&w=1080",
+      "imageHint": "bioinformatics analysis"
+    }
+  ]
+}
