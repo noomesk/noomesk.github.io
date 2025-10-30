@@ -1,0 +1,57 @@
+# Nombre del workflow
+name: Deploy to GitHub Pages
+
+# Se dispara cada vez que haces un push a la rama 'main'
+on:
+  push:
+    branches:
+      - main
+
+# Permisos necesarios para que el workflow pueda desplegar en Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Define el trabajo a realizar
+jobs:
+  build:
+    runs-on: ubuntu-latest # Usamos una máquina virtual con Linux
+    
+    steps:
+      # Paso 1: Descargar el código de tu repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Paso 2: Configurar Node.js (la versión que necesites)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Usamos una versión LTS de Node.js
+          cache: 'npm' # Acelera la instalación de dependencias
+
+      # Paso 3: Instalar las dependencias de tu proyecto
+      - name: Install dependencies
+        run: npm install
+
+      # Paso 4: Construir la versión estática de tu app
+      - name: Build project
+        run: npm run build
+
+      # Paso 5: Subir los archivos construidos a GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './out' # La carpeta que genera Next.js con 'output: export'
+
+  # Este segundo trabajo se encarga de publicar el sitio
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build # Se ejecuta después de que el trabajo 'build' termine
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
