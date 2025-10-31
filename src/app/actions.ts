@@ -1,7 +1,7 @@
 'use server';
 
-import { initializeFirebase } from "@/firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { initializeFirebaseAdmin } from "@/firebase/server";
+import { Timestamp } from 'firebase-admin/firestore';
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -18,12 +18,10 @@ export async function saveContactSubmission(data: z.infer<typeof contactSchema>)
   }
   
   try {
-    const { firestore } = initializeFirebase();
-    const submissionsCollection = collection(firestore, 'contact-submissions');
-    
-    await addDoc(submissionsCollection, {
+    const { firestore } = initializeFirebaseAdmin();
+    await firestore.collection('contact-submissions').add({
       ...validatedFields.data,
-      createdAt: serverTimestamp(),
+      createdAt: Timestamp.now(),
     });
   } catch (error) {
     console.error("Error saving contact submission to Firebase:", error);
