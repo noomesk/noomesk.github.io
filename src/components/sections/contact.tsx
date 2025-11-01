@@ -1,147 +1,112 @@
-"use client";
+'use client';
 
-import { useState, useRef } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { Section } from "./section";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Send, Star, Loader2 } from "lucide-react";
-import { z } from "zod";
-import { saveContactSubmission } from "@/app/actions";
+import { useState } from 'react';
 
-const contactSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  email: z.string().email("Dirección de email inválida."),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres."),
-});
-
-type FormData = z.infer<typeof contactSchema>;
-
-const MarqueeText = () => {
-    const marqueeContent = (
-        <>
-            <span className="text-4xl font-headline mx-4 uppercase">Hablemos de tu proyecto</span>
-            <Star className="inline-block mx-4 h-6 w-6" />
-            <span className="text-4xl font.headline mx-4 uppercase">Creemos algo increíble</span>
-            <Star className="inline-block mx-4 h-6 w-6" />
-            <span className="text-4xl font-headline mx-4 uppercase">Disponible para trabajar</span>
-            <Star className="inline-block mx-4 h-6 w-6" />
-        </>
-    );
-
-    return (
-        <div className="relative flex overflow-x-hidden text-primary mb-12 border-y border-primary/20 py-4">
-            <div className="flex whitespace-nowrap animate-marquee">
-                {marqueeContent}
-            </div>
-             <div className="flex whitespace-nowrap animate-marquee" aria-hidden="true">
-                {marqueeContent}
-            </div>
-        </div>
-    );
-};
-
+// ESTA LÍNEA ES PARA QUE SEPAMOS QUE ESTE ES EL COMPONENTE CORRECTO
+console.log("✅ El componente ContactSection se está cargando con el estilo correcto!");
 
 export function ContactSection() {
-  const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<z.ZodFormattedError<FormData> | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setErrors(null);
-
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    
-    const validatedFields = contactSchema.safeParse(data);
-
-    if (!validatedFields.success) {
-      setErrors(validatedFields.error.format());
-      setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error de Validación",
-        description: "Por favor, corrige los errores en el formulario.",
-      });
-      return;
-    }
+    setIsSubmitting(true);
+    setStatus(null);
 
     try {
-        await saveContactSubmission(validatedFields.data);
-        toast({
-          title: "¡Mensaje Enviado!",
-          description: "Gracias por contactarme. Te responderé pronto.",
-        });
-        formRef.current?.reset();
-        setErrors(null);
-    } catch (error) {
-        console.error("Error saving contact submission:", error);
-        toast({
-          variant: "destructive",
-          title: "Error al Enviar",
-          description: "No se pudo enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.",
-        });
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Algo salió mal');
+      }
+
+      setStatus({ type: 'success', message: '¡Mensaje enviado con éxito!' });
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error: any) {
+      setStatus({ type: 'error', message: error.message || 'Error al enviar el mensaje.' });
     } finally {
-        setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-
   return (
-    <Section
-      id="contact"
-      title="Ponte en Contacto"
-      description="¿Tienes un proyecto en mente o simplemente quieres saludar? Me encantaría saber de ti."
-    >
-        <MarqueeText />
-      <div className="max-w-xl mx-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline text-3xl uppercase">Contáctame</CardTitle>
-            <CardDescription>Completa el formulario a continuación y me pondré en contacto contigo lo antes posible.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form ref={formRef} onSubmit={handleSubmit} noValidate>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Nombre</Label>
-                  <Input id="name" name="name" placeholder="Tu Nombre" required />
-                  {errors?.name && <p className="text-sm font-medium text-destructive">{errors.name._errors[0]}</p>}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="tu@email.com" required />
-                  {errors?.email && <p className="text-sm font-medium text-destructive">{errors.email._errors[0]}</p>}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Mensaje</Label>
-                  <Textarea id="message" name="message" placeholder="Tu mensaje..." required rows={5} />
-                  {errors?.message && <p className="text-sm font-medium text-destructive">{errors.message._errors[0]}</p>}
-                </div>
-                <Button type="submit" disabled={loading} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Enviando...
-                    </>
-                  ) : (
-                    <>
-                      Enviar Mensaje
-                      <Send className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+    <section id="contact" className="py-20 bg-gray-900 text-white">
+      <div className="container mx-auto px-4 max-w-2xl">
+        <h2 className="font-headline uppercase text-4xl md:text-5xl font-black text-center mb-4">
+          CONTÁCTAME
+        </h2>
+        <p className="text-center text-gray-400 mb-12">
+          Completa el formulario a continuación y me pondré en contacto contigo lo antes posible.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Tu Nombre"
+              required
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-pink-500 focus:bg-gray-700 text-white placeholder-gray-500"
+            />
+          </div>
+
+          <div>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="tu@email.com"
+              required
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-pink-500 focus:bg-gray-700 text-white placeholder-gray-500"
+            />
+          </div>
+
+          <div>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Tu mensaje..."
+              rows={5}
+              required
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-pink-500 focus:bg-gray-700 text-white placeholder-gray-500 resize-none"
+            />
+          </div>
+
+          {status && (
+            <p className={`text-center ${status.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+              {status.message}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full font-bold py-3 px-6 rounded-lg bg-pink-600 hover:bg-pink-700 text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
+          </button>
+        </form>
       </div>
-    </Section>
+    </section>
   );
 }
