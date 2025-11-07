@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Send, Star, Loader2 } from "lucide-react";
 import { z } from "zod";
-import { saveContactSubmission } from "@/app/actions";
+// ¡ANTES USABA LA LIBRERÍA DE FORMSPREE, SHA NO MI CIELA xq me estaba dando dolor de cabeza, espero q este funcione!
 
 const contactSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
@@ -25,7 +25,7 @@ const MarqueeText = () => {
         <>
             <span className="text-4xl font-headline mx-4 uppercase">Hablemos de tu proyecto</span>
             <Star className="inline-block mx-4 h-6 w-6" />
-            <span className="text-4xl font.headline mx-4 uppercase">Creemos algo increíble</span>
+            <span className="text-4xl font-headline mx-4 uppercase">Creemos algo increíble</span>
             <Star className="inline-block mx-4 h-6 w-6" />
             <span className="text-4xl font-headline mx-4 uppercase">Disponible para trabajar</span>
             <Star className="inline-block mx-4 h-6 w-6" />
@@ -73,19 +73,35 @@ export function ContactSection() {
     }
 
     try {
-        await saveContactSubmission(validatedFields.data);
-        toast({
-          title: "¡Mensaje Enviado!",
-          description: "Gracias por contactarme. Te responderé pronto.",
+        // AQUI Hago llamada manualmente a Formspree JIJIJDISJ diosito q funcione AAAAAAAAAH
+        const response = await fetch("https://formspree.io/f/xqagrrgr", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
         });
-        formRef.current?.reset();
-        setErrors(null);
-    } catch (error) {
-        console.error("Error saving contact submission:", error);
+
+        if (response.ok) {
+            // Si la respuesta es "ok" (código 200), ¡éxito!
+            toast({
+              title: "¡Mensaje Enviado!",
+              description: "Gracias por contactarme. Te responderé pronto.",
+            });
+            formRef.current?.reset();
+            setErrors(null);
+        } else {
+            // Si Formspree devuelve un error (400, 500...)
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Error al enviar el formulario.");
+        }
+
+    } catch (error: any) {
+        console.error("Error al enviar el formulario:", error);
         toast({
           variant: "destructive",
           title: "Error al Enviar",
-          description: "No se pudo enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.",
+          description: error.message || "No se pudo enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.",
         });
     } finally {
         setLoading(false);

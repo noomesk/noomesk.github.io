@@ -4,7 +4,7 @@ import { HeroSection } from '@/components/sections/hero';
 import { SkillsSection } from '@/components/sections/skills';
 import { ProjectsSection } from '@/components/sections/projects';
 import { AiAdvisorSection } from '@/components/sections/ai-advisor';
-import { ContactSection } from '@/components/sections/contact';
+import { ContactSection } from '@/components/sections/contact'; // <-- USA ESTE
 import { Suspense } from 'react';
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
           <ProjectsSection />
         </Suspense>
         <AiAdvisorSection />
-        <ContactSection />
+        <ContactSection /> {/* <-- USA ESTE */}
       </main>
       <Footer />
     </div>

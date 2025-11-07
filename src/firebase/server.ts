@@ -14,8 +14,14 @@ export function initializeFirebaseAdmin(): AdminInstances {
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   let privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
+  // Modo desarrollo: permitir ejecución sin Firebase configurado
   if (!projectId || !clientEmail || !privateKey) {
-    throw new Error('Missing Firebase Admin environment variables');
+    console.warn('⚠️ Firebase Admin no configurado. El formulario de contacto no funcionará.');
+    console.warn('Para habilitar Firebase, configura las variables de entorno:');
+    console.warn('  - FIREBASE_PROJECT_ID');
+    console.warn('  - FIREBASE_CLIENT_EMAIL');
+    console.warn('  - FIREBASE_PRIVATE_KEY');
+    throw new Error('Firebase Admin no configurado. Revisa las variables de entorno.');
   }
 
   // Vercel almacena keys con \n escapadas; las normalizamos
