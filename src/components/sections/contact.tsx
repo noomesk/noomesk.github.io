@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useForm, ValidationError } from '@formspree/react';
 import { Section } from "./section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,16 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Send, Star, Loader2 } from "lucide-react";
-import { z } from "zod";
-// ¡YA NO USO LA LIBRERÍA DE FORMSPREE AAAAAAAAAAAAH!
-
-const contactSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  email: z.string().email("Dirección de email inválida."),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres."),
-});
-
-type FormData = z.infer<typeof contactSchema>;
 
 const MarqueeText = () => {
     const marqueeContent = (
@@ -46,61 +35,11 @@ const MarqueeText = () => {
 
 
 export function ContactSection() {
-  const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<z.ZodFormattedError<FormData> | null>(null);
+  const [state, handleSubmit] = useForm("xqagrrgr");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrors(null);
-
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    
-    const validatedFields = contactSchema.safeParse(data);
-
-    if (!validatedFields.success) {
-      setErrors(validatedFields.error.format());
-      setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Error de Validación",
-        description: "Por favor, corrige los errores en el formulario.",
-      });
-      return;
-    }
-
-    // MUAJAJAJA soy juacker jsjajsa! Creé un formulario falso y lo envi0 para evitar el problema de CORS xq no puedo pagarlo
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://formspree.io/f/xqagrrgr'; // Tu endpoint
-
-    // Aki añadí los campos al formulario falso
-    Object.entries(data).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value as string;
-        form.appendChild(input);
-    });
-
-    // Aki se añade a la página, c envia y lo quita 
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    // c muestra el mensaje de éxito y reseteamos el forrrrrrrrrrrrrms
-    toast({
-      title: "¡Mensaje Enviado!",
-      description: "Gracias por contactarme. Te responderé pronto.",
-    });
-    formRef.current?.reset();
-    setErrors(null);
-    setLoading(false);
-  };
-
+  if (state.succeeded) {
+      return <p>¡Gracias por contactarme!</p>;
+  }
 
   return (
     <Section
@@ -116,35 +55,27 @@ export function ContactSection() {
             <CardDescription>Completa el formulario a continuación y me pondré en contacto contigo lo antes posible.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form ref={formRef} onSubmit={handleSubmit} noValidate>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Nombre</Label>
-                  <Input id="name" name="name" placeholder="Tu Nombre" required />
-                  {errors?.name && <p className="text-sm font-medium text-destructive">{errors.name._errors[0]}</p>}
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input id="email" type="email" name="email" />
+                  <ValidationError 
+                    prefix="Email" 
+                    field="email"
+                    errors={state.errors}
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="tu@email.com" required />
-                  {errors?.email && <p className="text-sm font-medium text-destructive">{errors.email._errors[0]}</p>}
+                  <textarea id="message" name="message" className="w-full border rounded p-2" rows={5}></textarea>
+                  <ValidationError 
+                    prefix="Message" 
+                    field="message"
+                    errors={state.errors}
+                  />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Mensaje</Label>
-                  <Textarea id="message" name="message" placeholder="Tu mensaje..." required rows={5} />
-                  {errors?.message && <p className="text-sm font-medium text-destructive">{errors.message._errors[0]}</p>}
-                </div>
-                <Button type="submit" disabled={loading} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Enviando...
-                    </>
-                  ) : (
-                    <>
-                      Enviar Mensaje
-                      <Send className="ml-2 h-4 w-4" />
-                    </>
-                  )}
+                <Button type="submit" disabled={state.submitting} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                  {state.submitting ? 'Enviando...' : 'Enviar'}
                 </Button>
               </div>
             </form>
