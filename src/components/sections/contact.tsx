@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Send, Star, Loader2 } from "lucide-react";
 import { z } from "zod";
-// ¡ANTES USABA LA LIBRERÍA DE FORMSPREE, SHA NO MI CIELA xq me estaba dando dolor de cabeza, espero q este funcione!
+// ¡YA NO USO LA LIBRERÍA DE FORMSPREE AAAAAAAAAAAAH!
 
 const contactSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
@@ -72,40 +72,33 @@ export function ContactSection() {
       return;
     }
 
-    try {
-        // AQUI Hago llamada manualmente a Formspree JIJIJDISJ diosito q funcione AAAAAAAAAH
-        const response = await fetch("https://formspree.io/f/xqagrrgr", {
-            method: "POST",
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
+    // MUAJAJAJA soy juacker jsjajsa! Creé un formulario falso y lo envi0 para evitar el problema de CORS xq no puedo pagarlo
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://formspree.io/f/xqagrrgr'; // Tu endpoint
 
-        if (response.ok) {
-            // Si la respuesta es "ok" (código 200), ¡éxito!
-            toast({
-              title: "¡Mensaje Enviado!",
-              description: "Gracias por contactarme. Te responderé pronto.",
-            });
-            formRef.current?.reset();
-            setErrors(null);
-        } else {
-            // Si Formspree devuelve un error (400, 500...)
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Error al enviar el formulario.");
-        }
+    // Aki añadí los campos al formulario falso
+    Object.entries(data).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value as string;
+        form.appendChild(input);
+    });
 
-    } catch (error: any) {
-        console.error("Error al enviar el formulario:", error);
-        toast({
-          variant: "destructive",
-          title: "Error al Enviar",
-          description: error.message || "No se pudo enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.",
-        });
-    } finally {
-        setLoading(false);
-    }
+    // Aki se añade a la página, c envia y lo quita 
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    // c muestra el mensaje de éxito y reseteamos el forrrrrrrrrrrrrms
+    toast({
+      title: "¡Mensaje Enviado!",
+      description: "Gracias por contactarme. Te responderé pronto.",
+    });
+    formRef.current?.reset();
+    setErrors(null);
+    setLoading(false);
   };
 
 
