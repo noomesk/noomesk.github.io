@@ -8,26 +8,34 @@ const groq = new Groq({
 });
 
 /**
- * Función para sanitizar una respuesta de la IA que puede contener JSON malformado.
- * Convierte template literals (backticks) en cadenas JSON válidas.
+ * Función para extraer datos de la respuesta de la IA de forma flexible y robusta.
+ * En lugar de parsear el JSON, busca las claves y extrae su contenido directamente.
  */
-function sanitizeJsonResponse(rawResponse: string): string {
-    // 1. Extraer el objeto JSON de la respuesta, por si viene en un bloque markdown.
-    const jsonMatch = rawResponse.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-    let jsonString = jsonMatch ? jsonMatch[1] : rawResponse;
+function extractAndRebuildJson(rawResponse: string): { styledCodeSnippet: string; explanation: string } {
+    // Función auxiliar para extraer el valor de una clave específica
+    const extractValue = (key: string): string => {
+        // Busca "clave": `contenido` o "clave": "contenido"
+        // El regex captura todo el contenido, incluyendo saltos de línea, hasta la comilla de cierre.
+        const regex = new RegExp(`"${key}"\\s*:\\s*(\`|")([\\s\\S]*?)\\1`, 'i');
+        const match = rawResponse.match(regex);
+        
+        if (match && match[2]) {
+            // Devuelve el contenido capturado, limpiando espacios en blanco al inicio y al final.
+            return match[2].trim();
+        }
+        
+        // Si no se encuentra, lanzamos un error para que se maneje más arriba.
+        throw new Error(`No se pudo encontrar la clave "${key}" en la respuesta de la IA.`);
+    };
 
-    // 2. Reemplazar los valores de cadena que usan backticks por cadenas JSON válidas.
-    // Busca claves específicas seguidas de un valor entre backticks.
-    // La expresión regular es: "clave": `contenido`
-    const regex = /"(styledCodeSnippet|explanation)":\s*`([\s\S]*?)`/g;
-    
-    jsonString = jsonString.replace(regex, (match, key, content) => {
-        // JSON.stringify se encarga de escapar correctamente el contenido (saltos de línea, comillas, etc.)
-        const escapedContent = JSON.stringify(content);
-        return `"${key}": ${escapedContent}`;
-    });
+    const styledCodeSnippet = extractValue('styledCodeSnippet');
+    const explanation = extractValue('explanation');
 
-    return jsonString;
+    // Devolvemos un objeto JavaScript limpio y seguro.
+    return {
+        styledCodeSnippet,
+        explanation,
+    };
 }
 
 export async function POST(request: NextRequest) {
@@ -41,7 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // --- 1. Prompt Ultra-Estricto ---
+    // El prompt es bueno, lo mantenemos.
     const systemPrompt = `Eres un experto en React y sistemas de diseño. Tu tarea es analizar un fragmento de código React y reescribirlo para que siga las mejores prácticas de un sistema de diseño específico.
 
 Contexto de los Sistemas de Diseño:
@@ -75,22 +83,20 @@ Reglas de Respuesta:
         throw new Error("No se recibió respuesta de la API de Groq.");
     }
 
-    // --- 2. Lógica de Parseo a Prueba de Balas ---
+    // --- NUEVA LÓGICA DE PARSEO A PRUEBA DE BALAS ---
     let parsedResponse;
     try {
-        // Usamos nuestra función de sanitización para limpiar la respuesta
-        const sanitizedJsonString = sanitizeJsonResponse(rawResponse);
-        console.log("JSON sanitizado para parsear:", sanitizedJsonString); // Log para depuración
-        
-        // Ahora intentamos parsear el JSON limpio
-        parsedResponse = JSON.parse(sanitizedJsonString);
+        // Usamos nuestra nueva función para extraer y reconstruir el objeto.
+        // Esto ignora por completo si la IA devolvió JSON válido o no.
+        parsedResponse = extractAndRebuildJson(rawResponse);
+        console.log("Objeto extraído y reconstruido:", parsedResponse);
 
     } catch (error) {
-        console.error("Error al parsear el JSON de la IA:", error);
+        console.error("Error al extraer datos de la respuesta de la IA:", error);
         console.error("Respuesta cruda recibida de la IA:", rawResponse);
         return new Response(JSON.stringify({ 
-            error: "La IA devolvió una respuesta que no es un JSON válido.",
-            details: error.message,
+            error: "La IA devolvió una respuesta con un formato inesperado.",
+            details: error instanceof Error ? error.message : String(error),
             rawResponse: rawResponse 
         }), { 
             status: 500,
@@ -98,9 +104,9 @@ Reglas de Respuesta:
         });
     }
     
-    // --- 3. Validación de la Respuesta ---
+    // --- Validación de la Respuesta (La lógica original era buena) ---
     if (!parsedResponse || typeof parsedResponse.styledCodeSnippet !== 'string' || typeof parsedResponse.explanation !== 'string') {
-        console.error("El JSON no tiene el formato esperado. Objeto recibido:", parsedResponse);
+        console.error("El objeto reconstruido no tiene el formato esperado.");
         return new Response(JSON.stringify({ 
             error: "La respuesta de la IA no contiene los campos esperados ('styledCodeSnippet', 'explanation').",
             receivedObject: parsedResponse
