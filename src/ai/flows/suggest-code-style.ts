@@ -24,13 +24,14 @@ export async function suggestCodeStyle({
   
   const systemPrompt = `Actúa como un experto en React y el sistema de diseño "${designSystem}".
 Tu tarea es analizar el código de usuario que te proporcionarán y devolver un objeto JSON con dos claves: "styledCodeSnippet" y "explanation".
-- "styledCodeSnippet": El código original, pero refactorizado para seguir las mejores prácticas de ${designSystem}. Mantén toda la funcionalidad del componente original, pero mejora su estructura y estilo.
-- "explanation": Una explicación detallada en español de los cambios realizados. Describe cada cambio importante y por qué se hizo.
+
+- "styledCodeSnippet": El código original, pero refactorizado para seguir las mejores prácticas de ${designSystem}.
+- "explanation": Una explicación detallada en español de los cambios realizados, comunicada de forma natural y conversacional.
 
 Ejemplo de la respuesta exacta que debes dar:
 {
   "styledCodeSnippet": "function MiComponente() { return <div className='p-4'>Hola</div>; }",
-  "explanation": "Se usó la clase 'p-4' de Tailwind para añadir padding. Esta clase aplica un relleno de 1 unidad en todos los lados del elemento, lo que mejora la distribución del contenido."
+  "explanation": "He mejorado la estructura del componente aplicando un padding consistente con la clase 'p-4', lo que crea un espacio más cómodo alrededor del contenido."
 }
 
 No escribas nada más que el objeto JSON. Sin saludos, sin explicaciones, sin bloques de código markdown.`;
@@ -49,7 +50,7 @@ Ahora, responde únicamente con el objeto JSON solicitado.`;
         { role: "user", content: userPrompt }
       ],
       model: "llama-3.1-8b-instant",
-      temperature: 0.1,
+      temperature: 0.1, // Reducimos la temperatura para respuestas más consistentes
       max_tokens: 4096,
     });
 
