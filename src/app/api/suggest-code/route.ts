@@ -9,33 +9,61 @@ const groq = new Groq({
 
 /**
  * Función para extraer datos de la respuesta de la IA de forma flexible y robusta.
- * En lugar de parsear el JSON, busca las claves y extrae su contenido directamente.
+ * En lugar de parsear el JSON, busca las claves y extrae su contenido buscando el final del objeto o la siguiente clave.
  */
 function extractAndRebuildJson(rawResponse: string): { styledCodeSnippet: string; explanation: string } {
-    // Función auxiliar para extraer el valor de una clave específica
+    // 1. Primero, quitamos el bloque de código markdown si existe.
+    const jsonMatch = rawResponse.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    let textToAnalyze = jsonMatch ? jsonMatch[1] : rawResponse;
+
+    // 2. Función auxiliar para extraer el valor de una clave específica.
     const extractValue = (key: string): string => {
-        // Busca "clave": `contenido` o "clave": "contenido"
-        // El regex captura todo el contenido, incluyendo saltos de línea, hasta la comilla de cierre.
-        const regex = new RegExp(`"${key}"\\s*:\\s*(\`|")([\\s\\S]*?)\\1`, 'i');
-        const match = rawResponse.match(regex);
-        
-        if (match && match[2]) {
-            // Devuelve el contenido capturado, limpiando espacios en blanco al inicio y al final.
-            return match[2].trim();
+        // Busca el inicio de la clave, ej: "styledCodeSnippet":
+        const keyPattern = new RegExp(`"${key}"\\s*:\\s*`);
+        const keyMatch = textToAnalyze.match(keyPattern);
+
+        if (!keyMatch) {
+            throw new Error(`No se pudo encontrar la clave "${key}" en la respuesta de la IA.`);
         }
-        
-        // Si no se encuentra, lanzamos un error para que se maneje más arriba.
-        throw new Error(`No se pudo encontrar la clave "${key}" en la respuesta de la IA.`);
+
+        // El valor empieza justo después de la clave y su delimitador (que puede ser " o `)
+        let valueStart = keyMatch.index + keyMatch[0].length;
+        let valueEnd = textToAnalyze.length;
+
+        // Busca el inicio de la SIGUIENTE clave para saber dónde termina esta.
+        const nextKeyPattern = /",\s*"(?:styledCodeSnippet|explanation)"\s*:/;
+        const nextKeyMatch = textToAnalyze.substring(valueStart).search(nextKeyPattern);
+
+        if (nextKeyMatch !== -1) {
+            // Si encuentra la siguiente clave, el valor termina justo antes.
+            valueEnd = valueStart + nextKeyMatch;
+        } else {
+            // Si no, busca la llave de cierre del objeto JSON.
+            const lastBraceIndex = textToAnalyze.lastIndexOf('}');
+            if (lastBraceIndex > valueStart) {
+                valueEnd = lastBraceIndex;
+            }
+        }
+
+        let rawValue = textToAnalyze.substring(valueStart, valueEnd).trim();
+
+        // El valor extraído estará envuelto en comillas o backticks. Los quitamos.
+        if ((rawValue.startsWith('"') && rawValue.endsWith('"')) || (rawValue.startsWith('`') && rawValue.endsWith('`'))) {
+            rawValue = rawValue.slice(1, -1);
+        }
+
+        // --- ¡LA SOLUCIÓN DEFINITIVA! ---
+        // La IA envía los saltos de línea como "\n". Los convertimos a saltos de línea reales.
+        // También nos aseguramos de que las comillas escapadas (\" ) se conviertan en comillas normales.
+        const cleanedValue = rawValue.replace(/\\n/g, '\n').replace(/\\"/g, '"');
+
+        return cleanedValue;
     };
 
     const styledCodeSnippet = extractValue('styledCodeSnippet');
     const explanation = extractValue('explanation');
 
-    // Devolvemos un objeto JavaScript limpio y seguro.
-    return {
-        styledCodeSnippet,
-        explanation,
-    };
+    return { styledCodeSnippet, explanation };
 }
 
 export async function POST(request: NextRequest) {
@@ -83,11 +111,10 @@ Reglas de Respuesta:
         throw new Error("No se recibió respuesta de la API de Groq.");
     }
 
-    // --- NUEVA LÓGICA DE PARSEO A PRUEBA DE BALAS ---
+    // --- LÓGICA DE PARSEO A PRUEBA DE BALAS ---
     let parsedResponse;
     try {
         // Usamos nuestra nueva función para extraer y reconstruir el objeto.
-        // Esto ignora por completo si la IA devolvió JSON válido o no.
         parsedResponse = extractAndRebuildJson(rawResponse);
         console.log("Objeto extraído y reconstruido:", parsedResponse);
 
@@ -104,7 +131,7 @@ Reglas de Respuesta:
         });
     }
     
-    // --- Validación de la Respuesta (La lógica original era buena) ---
+    // --- Validación de la Respuesta ---
     if (!parsedResponse || typeof parsedResponse.styledCodeSnippet !== 'string' || typeof parsedResponse.explanation !== 'string') {
         console.error("El objeto reconstruido no tiene el formato esperado.");
         return new Response(JSON.stringify({ 

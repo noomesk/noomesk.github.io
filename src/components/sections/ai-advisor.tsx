@@ -114,6 +114,12 @@ export function AiAdvisorSection() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
+                        {/* 
+                          ¡AQUÍ ESTÁ LA SOLUCIÓN! 
+                          La etiqueta <pre> le dice al navegador que preserve los espacios y saltos de línea.
+                          La clase `whitespace-pre` en el <code> refuerza ese comportamiento.
+                          Con estas dos cosas, el código debería mostrarse formateado correctamente.
+                        */}
                         <pre className="bg-muted p-4 rounded-md overflow-x-auto">
                           <code className="font-code text-sm whitespace-pre">{result.styledCodeSnippet}</code>
                         </pre>
