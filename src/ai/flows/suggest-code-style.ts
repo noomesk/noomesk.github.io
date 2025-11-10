@@ -62,38 +62,42 @@ Ahora, responde únicamente con el objeto JSON solicitado.`;
 
     console.log("Respuesta cruda de Groq:", rawResponse);
 
-    // --- LÓGICA DE PARSEO CORREGIDA Y SIMPLIFICADA diosss casi ke no---
-
+    // Lógica de parseo mejorada
     let parsedResponse;
     try {
-      // Aki se intenta parsear la respuesta directamente.
-      // A veces, a pesar de los saltos de línea, el motor JS lo logra, esperemos anshiii.
-      parsedResponse = JSON.parse(rawResponse);
-    } catch (directParseError) {
-      // Si el parseo directo falla, es por los saltos de línea (es lo mas probable).
-      // El problema son los saltos de línea DENTRO de los strings del JSON.
-      // La solución es reemplazarlos por su representación escapada: \n
-      const sanitizedResponse = rawResponse.replace(/\n/g, '\\n');
+      // Intentamos extraer el JSON de la respuesta
+      const jsonMatch = rawResponse.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error("No se encontró un objeto JSON válido en la respuesta");
+      }
       
-      console.log("Error en parseo directo. Intentando con string saneado.");
-      console.log("String saneado:", sanitizedResponse);
-
-      try {
-        parsedResponse = JSON.parse(sanitizedResponse);
-      } catch (sanitizedParseError) {
-        console.error("Error al parsear el JSON incluso después de sanear. Respuesta cruda:", rawResponse);
-        console.error("String saneado que falló:", sanitizedResponse);
+      const jsonString = jsonMatch[0];
+      parsedResponse = JSON.parse(jsonString);
+    } catch (parseError) {
+      console.error("Error al parsear el JSON:", parseError);
+      console.error("Respuesta cruda:", rawResponse);
+      
+      // Intento de recuperación: extraer manualmente los valores
+      const styledCodeMatch = rawResponse.match(/"styledCodeSnippet":\s*"([^"]*)"/);
+      const explanationMatch = rawResponse.match(/"explanation":\s*"([^"]*)"/);
+      
+      if (styledCodeMatch && explanationMatch) {
+        parsedResponse = {
+          styledCodeSnippet: styledCodeMatch[1],
+          explanation: explanationMatch[1]
+        };
+      } else {
         throw new Error("La IA devolvió una respuesta que no es un JSON válido.");
       }
     }
     
-    // Aqui se valida que el objeto tenga las propiedades esperadas
+    // Validamos que el objeto tenga las propiedades esperadas
     if (!parsedResponse || typeof parsedResponse.styledCodeSnippet !== 'string' || typeof parsedResponse.explanation !== 'string') {
       console.error("El JSON no tiene el formato esperado. Objeto recibido:", parsedResponse);
       throw new Error("La respuesta de la IA no contiene los campos esperados.");
     }
 
-    // Se devuelve el objeto validado y chan channnnn ojalá funcioneeeeee xq tengo sueño
+    // Devolvemos el objeto validado
     return {
       styledCodeSnippet: parsedResponse.styledCodeSnippet,
       explanation: parsedResponse.explanation

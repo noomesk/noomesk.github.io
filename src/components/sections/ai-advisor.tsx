@@ -27,6 +27,23 @@ export function AiAdvisorSection() {
   const opacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
   const scale = useTransform(scrollYProgress, [0.3, 0.5], [0.8, 1]);
 
+  // Función simple para formatear el código
+  const formatCode = (code: string): string => {
+    // Reemplazar etiquetas de apertura con salto de línea y sangría
+    let formatted = code.replace(/</g, '\n  <');
+    
+    // Reemplazar etiquetas de cierre con salto de línea
+    formatted = formatted.replace(/>/g, '>\n');
+    
+    // Eliminar líneas vacías y espacios en blanco al inicio
+    formatted = formatted.split('\n')
+      .filter(line => line.trim() !== '')
+      .map(line => line.replace(/^\s+/, '  '))
+      .join('\n');
+    
+    return formatted;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!codeSnippet.trim()) {
@@ -115,7 +132,7 @@ export function AiAdvisorSection() {
                       </CardHeader>
                       <CardContent>
                         <pre className="bg-muted p-4 rounded-md overflow-x-auto">
-                          <code className="font-code text-sm">{result.styledCodeSnippet}</code>
+                          <code className="font-code text-sm whitespace-pre">{formatCode(result.styledCodeSnippet)}</code>
                         </pre>
                       </CardContent>
                     </Card>
