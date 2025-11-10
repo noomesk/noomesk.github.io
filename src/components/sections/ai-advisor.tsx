@@ -158,7 +158,7 @@ export function AiAdvisorSection() {
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2 font-headline uppercase">
                           <Lightbulb className="text-yellow-400" />
-                          Explicación de Mejoras
+                          Explicación
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
