@@ -27,41 +27,6 @@ export function AiAdvisorSection() {
   const opacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
   const scale = useTransform(scrollYProgress, [0.3, 0.5], [0.8, 1]);
 
-  // Función mejorada para formatear el código con indentación adecuada
-  const formatCode = (code: string): string => {
-    // Si el código ya está bien formateado, lo devolvemos tal cual
-    if (code.includes('\n  ')) {
-      return code;
-    }
-    
-    // Si no, aplicamos un formateo básico
-    let formatted = code;
-    let indentLevel = 0;
-    const result = [];
-    
-    // Dividimos el código por líneas
-    const lines = formatted.split('\n');
-    
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      
-      // Si la línea cierra un elemento, reducimos la indentación
-      if (trimmedLine.startsWith('</') || trimmedLine.includes('/>')) {
-        indentLevel = Math.max(0, indentLevel - 1);
-      }
-      
-      // Añadimos la línea con la indentación actual
-      result.push('  '.repeat(indentLevel) + trimmedLine);
-      
-      // Si la línea abre un elemento pero no lo cierra, aumentamos la indentación
-      if (trimmedLine.includes('<') && !trimmedLine.includes('</') && !trimmedLine.includes('/>') && !trimmedLine.includes('/>')) {
-        indentLevel++;
-      }
-    }
-    
-    return result.join('\n');
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!codeSnippet.trim()) {
@@ -150,7 +115,7 @@ export function AiAdvisorSection() {
                       </CardHeader>
                       <CardContent>
                         <pre className="bg-muted p-4 rounded-md overflow-x-auto">
-                          <code className="font-code text-sm whitespace-pre">{formatCode(result.styledCodeSnippet)}</code>
+                          <code className="font-code text-sm whitespace-pre">{result.styledCodeSnippet}</code>
                         </pre>
                       </CardContent>
                     </Card>
