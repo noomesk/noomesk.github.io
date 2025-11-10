@@ -38,7 +38,14 @@ export function AiAdvisorSection() {
     setResult(null);
     try {
       const output = await suggestCodeStyle({ codeSnippet, designSystem });
-      setResult(output);
+      
+      // <-- CAMBIO AQUÍ: Eliminamos las líneas de separación para un look más limpio
+      const ctaText = `\n\n¿Te gustó esta optimización? Es solo un ejemplo de cómo puedo llevar tus ideas de código a un producto robusto y bien diseñado. Si buscas una desarrolladora full-stack para crear experiencias digitales excepcionales con IA, ¡hablemos! <a href="#contact" class="text-primary hover:underline font-semibold">¡Contáctame aquí!</a>`;
+      
+      const finalExplanation = output.explanation + ctaText;
+
+      setResult({ ...output, explanation: finalExplanation });
+
     } catch (err) {
       console.error(err);
       setError('Ocurrió un error al obtener sugerencias. Por favor, inténtalo de nuevo.');
@@ -133,7 +140,11 @@ export function AiAdvisorSection() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-muted-foreground whitespace-pre-wrap">{result.explanation}</p>
+                        {/* Usamos 'dangerouslySetInnerHTML' para que el enlace <a> se renderice correctamente */}
+                        <p 
+                          className="text-muted-foreground whitespace-pre-wrap" 
+                          dangerouslySetInnerHTML={{ __html: result.explanation }}
+                        />
                       </CardContent>
                     </Card>
                   </div>
