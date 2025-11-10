@@ -27,21 +27,39 @@ export function AiAdvisorSection() {
   const opacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
   const scale = useTransform(scrollYProgress, [0.3, 0.5], [0.8, 1]);
 
-  // Función simple para formatear el código
+  // Función mejorada para formatear el código con indentación adecuada
   const formatCode = (code: string): string => {
-    // Reemplazar etiquetas de apertura con salto de línea y sangría
-    let formatted = code.replace(/</g, '\n  <');
+    // Si el código ya está bien formateado, lo devolvemos tal cual
+    if (code.includes('\n  ')) {
+      return code;
+    }
     
-    // Reemplazar etiquetas de cierre con salto de línea
-    formatted = formatted.replace(/>/g, '>\n');
+    // Si no, aplicamos un formateo básico
+    let formatted = code;
+    let indentLevel = 0;
+    const result = [];
     
-    // Eliminar líneas vacías y espacios en blanco al inicio
-    formatted = formatted.split('\n')
-      .filter(line => line.trim() !== '')
-      .map(line => line.replace(/^\s+/, '  '))
-      .join('\n');
+    // Dividimos el código por líneas
+    const lines = formatted.split('\n');
     
-    return formatted;
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      
+      // Si la línea cierra un elemento, reducimos la indentación
+      if (trimmedLine.startsWith('</') || trimmedLine.includes('/>')) {
+        indentLevel = Math.max(0, indentLevel - 1);
+      }
+      
+      // Añadimos la línea con la indentación actual
+      result.push('  '.repeat(indentLevel) + trimmedLine);
+      
+      // Si la línea abre un elemento pero no lo cierra, aumentamos la indentación
+      if (trimmedLine.includes('<') && !trimmedLine.includes('</') && !trimmedLine.includes('/>') && !trimmedLine.includes('/>')) {
+        indentLevel++;
+      }
+    }
+    
+    return result.join('\n');
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

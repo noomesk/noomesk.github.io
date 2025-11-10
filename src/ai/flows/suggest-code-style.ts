@@ -23,14 +23,14 @@ export async function suggestCodeStyle({
 }: SuggestCodeStyleInput): Promise<SuggestCodeStyleOutput> {
   
   const systemPrompt = `Actúa como un experto en React y el sistema de diseño "${designSystem}".
-Tu única tarea es analizar el código de usuario que te proporcionarán y devolver un objeto JSON con dos claves: "styledCodeSnippet" y "explanation".
-- "styledCodeSnippet": El código original, pero refactorizado para seguir las mejores prácticas de ${designSystem}.
-- "explanation": Una explicación en español de los cambios realizados.
+Tu tarea es analizar el código de usuario que te proporcionarán y devolver un objeto JSON con dos claves: "styledCodeSnippet" y "explanation".
+- "styledCodeSnippet": El código original, pero refactorizado para seguir las mejores prácticas de ${designSystem}. Mantén toda la funcionalidad del componente original, pero mejora su estructura y estilo.
+- "explanation": Una explicación detallada en español de los cambios realizados. Describe cada cambio importante y por qué se hizo.
 
 Ejemplo de la respuesta exacta que debes dar:
 {
   "styledCodeSnippet": "function MiComponente() { return <div className='p-4'>Hola</div>; }",
-  "explanation": "Se usó la clase 'p-4' de Tailwind para añadir padding."
+  "explanation": "Se usó la clase 'p-4' de Tailwind para añadir padding. Esta clase aplica un relleno de 1 unidad en todos los lados del elemento, lo que mejora la distribución del contenido."
 }
 
 No escribas nada más que el objeto JSON. Sin saludos, sin explicaciones, sin bloques de código markdown.`;
@@ -71,24 +71,28 @@ Ahora, responde únicamente con el objeto JSON solicitado.`;
         throw new Error("No se encontró un objeto JSON válido en la respuesta");
       }
       
-      const jsonString = jsonMatch[0];
-      parsedResponse = JSON.parse(jsonString);
-    } catch (parseError) {
-      console.error("Error al parsear el JSON:", parseError);
-      console.error("Respuesta cruda:", rawResponse);
+      let jsonString = jsonMatch[0];
       
-      // Intento de recuperación: extraer manualmente los valores
-      const styledCodeMatch = rawResponse.match(/"styledCodeSnippet":\s*"([^"]*)"/);
-      const explanationMatch = rawResponse.match(/"explanation":\s*"([^"]*)"/);
+      // Reemplazamos los saltos de línea dentro de los valores del JSON
+      jsonString = jsonString.replace(/"([^"]*)"/g, (match, p1) => {
+        return '"' + p1.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t') + '"';
+      });
       
-      if (styledCodeMatch && explanationMatch) {
-        parsedResponse = {
-          styledCodeSnippet: styledCodeMatch[1],
-          explanation: explanationMatch[1]
-        };
-      } else {
+      try {
+        parsedResponse = JSON.parse(jsonString);
+      } catch (parseError) {
+        console.error("Error al parsear el JSON:", parseError);
+        console.error("JSON saneado que falló:", jsonString);
         throw new Error("La IA devolvió una respuesta que no es un JSON válido.");
       }
+    } catch (error) {
+      console.error("Error general en suggestCodeStyle:", error);
+      
+      if (error instanceof Error) {
+        throw new Error(`Fallo al obtener sugerencias de IA: ${error.message}`);
+      }
+      
+      throw new Error("Ocurrió un error desconocido al procesar tu solicitud.");
     }
     
     // Validamos que el objeto tenga las propiedades esperadas
