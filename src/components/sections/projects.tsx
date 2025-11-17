@@ -13,12 +13,16 @@ import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import { Starfield } from '../ui/starfield';
 
+// --- CAMBIO 1: He actualizado la información del primer proyecto para que sea EndModa ---
 const projects = [
   {
-    id: 'project-1',
-    title: 'Plataforma E-commerce',
-    description: 'Un sitio de comercio electrónico con todas las funciones, una interfaz de usuario moderna, filtrado de productos y un proceso de pago seguro construido con Next.js y Stripe.',
-    tags: ['Next.js', 'React', 'Stripe', 'Tailwind CSS'],
+    id: 'project-1', // Ete es el mismo id, lo dejé asi al final para que la lógica de imagen funcione eeeeej
+    title: 'EndModa',
+    description: 'Tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
+    tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
+    // --- CAMBIO 2: He añadido los enlaces específicos para este proyecto :3 netlify y github  ---
+    githubUrl: 'https://github.com/noomesk/Endmoda',
+    liveUrl: 'https://endmoda.netlify.app',
   },
   {
     id: 'project-4',
@@ -34,13 +38,18 @@ const projects = [
   },
 ];
 
-const ProjectCard = ({ project, image }: { project: typeof projects[0]; image: any }) => (
+// --- CAMBIO 3: He modificado ProjectCard para que use la imagen específica (oublic/images) y los enlaces ---
+const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
+    // Lógica para la imagen: si es EndModa, usa la nuestra. Si no, usa el placeholder.
+    const isEndModa = project.id === 'project-1';
+    const imageSrc = isEndModa ? '/images/endmoda-showcase.png' : (PlaceHolderImages.find(img => img.id === project.id)?.imageUrl || '');
+
+    return (
     <Card className="flex flex-col overflow-hidden bg-card h-full w-full">
       <CardHeader className="p-0 relative aspect-video">
         <Image
-          src={image.imageUrl}
-          alt={image.description}
-          data-ai-hint={image.imageHint}
+          src={imageSrc}
+          alt={`Vista previa de ${project.title}`}
           fill
           className="object-cover"
         />
@@ -56,13 +65,14 @@ const ProjectCard = ({ project, image }: { project: typeof projects[0]; image: a
             <CardDescription>{project.description}</CardDescription>
           </CardContent>
             <CardFooter className="gap-2 mt-auto">
+                {/* --- CAMBIO 4: Los enlaces ahora son dinámicos o tienen un fallback --- */}
                 <Button asChild className="w-full" variant="outline">
-                <Link href="https://github.com/noomesk" target="_blank">
+                <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
                     <Github className="mr-2" /> GitHub
                 </Link>
                 </Button>
                 <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                <Link href="#" target="_blank">
+                <Link href={project.liveUrl || "#"} target="_blank">
                     <ExternalLink className="mr-2" /> Demo en Vivo
                 </Link>
                 </Button>
@@ -70,6 +80,8 @@ const ProjectCard = ({ project, image }: { project: typeof projects[0]; image: a
         </>
     </Card>
 );
+};
+
 
 const ZoomEffect = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -93,8 +105,7 @@ const ZoomEffect = () => {
 
 
 export function ProjectsSection() {
-  const projectImages = PlaceHolderImages.filter(img => img.id.startsWith('project-'));
-
+  // Ya no se requiere filtrar las imágenes de placeholder, ya que ahora se manejan en el componente MUAJAJ 
   return (
     <>
       <ZoomEffect />
@@ -105,23 +116,18 @@ export function ProjectsSection() {
         className="relative z-10 bg-background"
       >
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => {
-              const image = projectImages.find(img => img.id === project.id) || projectImages[0];
-              return (
+            {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
-                  className={cn(
-                    "animated-section-element"
-                  )}
+                  className={cn("animated-section-element")}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ delay: index * 0.2, duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
                 >
-                  <ProjectCard project={project} image={image} />
+                  <ProjectCard project={project} />
                 </motion.div>
-              );
-            })}
+            ))}
           </div>
       </Section>
     </>

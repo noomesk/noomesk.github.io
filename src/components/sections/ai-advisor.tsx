@@ -39,7 +39,7 @@ export function AiAdvisorSection() {
     try {
       const output = await suggestCodeStyle({ codeSnippet, designSystem });
       
-      // <-- CAMBIO AQUÍ: Eliminamos las líneas de separación para un look más limpio
+      // <-- CAMBIOooOOOOOO: Se eliminaron las líneas de separación para un look más limpio, antes se veia feito
       const ctaText = `\n\n¿Te gustó esta optimización? Es solo un ejemplo de cómo puedo llevar tus ideas de código a un producto robusto y bien diseñado. Si buscas una desarrolladora full-stack para crear experiencias digitales excepcionales con IA, ¡hablemos! <a href="#contact" class="text-primary hover:underline font-semibold">¡Contáctame aquí!</a>`;
       
       const finalExplanation = output.explanation + ctaText;
@@ -122,10 +122,10 @@ export function AiAdvisorSection() {
                       </CardHeader>
                       <CardContent>
                         {/* 
-                          ¡AQUÍ ESTÁ LA SOLUCIÓN! 
+                          ¡SOLUCIÓOOOOOOOOooOON REINAAAAAAAAAA! 
                           La etiqueta <pre> le dice al navegador que preserve los espacios y saltos de línea.
                           La clase `whitespace-pre` en el <code> refuerza ese comportamiento.
-                          Con estas dos cosas, el código debería mostrarse formateado correctamente.
+                          Con estas dos cosas, el código debería mostrarse formateado correctamente.JAJA casi que no. 
                         */}
                         <pre className="bg-muted p-4 rounded-md overflow-x-auto">
                           <code className="font-code text-sm whitespace-pre">{result.styledCodeSnippet}</code>
@@ -140,7 +140,7 @@ export function AiAdvisorSection() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        {/* Usamos 'dangerouslySetInnerHTML' para que el enlace <a> se renderice correctamente */}
+                        {/* Bueno al final busqué y puse 'dangerouslySetInnerHTML' para que el enlace <a> se renderice correctamente, esperemos funcioneeee*/}
                         <p 
                           className="text-muted-foreground whitespace-pre-wrap" 
                           dangerouslySetInnerHTML={{ __html: result.explanation }}
