@@ -10,17 +10,16 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { Starfield } from '../ui/starfield';
+import { gsap } from 'gsap';
 
-// --- CAMBIO 1: He actualizado la información del primer proyecto para que sea EndModa ---
 const projects = [
   {
-    id: 'project-1', // Ete es el mismo id, lo dejé asi al final para que la lógica de imagen funcione eeeeej
+    id: 'project-1',
     title: 'EndModa',
     description: 'Tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
     tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
-    // --- CAMBIO 2: He añadido los enlaces específicos para este proyecto :3 netlify y github  ---
     githubUrl: 'https://github.com/noomesk/Endmoda',
     liveUrl: 'https://endmoda.netlify.app',
   },
@@ -38,14 +37,44 @@ const projects = [
   },
 ];
 
-// --- CAMBIO 3: He modificado ProjectCard para que use la imagen específica (oublic/images) y los enlaces ---
 const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
-    // Lógica para la imagen: si es EndModa, usa la nuestra. Si no, usa el placeholder.
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const card = cardRef.current;
+
+        if (!card) return;
+
+        gsap.set(card, { transformOrigin: "center center" });
+
+        const hoverAnimation = gsap.to(card, {
+            scale: 1.05,
+            boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+            duration: 0.3,
+            ease: "power2.out",
+            paused: true
+        });
+
+        const handleMouseEnter = () => hoverAnimation.play();
+        const handleMouseLeave = () => hoverAnimation.reverse();
+
+        card.addEventListener('mouseenter', handleMouseEnter);
+        card.addEventListener('mouseleave', handleMouseLeave);
+
+        return () => {
+            card.removeEventListener('mouseenter', handleMouseEnter);
+            card.removeEventListener('mouseleave', handleMouseLeave);
+        };
+    }, []);
+
     const isEndModa = project.id === 'project-1';
     const imageSrc = isEndModa ? '/images/endmoda-showcase.png' : (PlaceHolderImages.find(img => img.id === project.id)?.imageUrl || '');
 
     return (
-    <Card className="flex flex-col overflow-hidden bg-card h-full w-full">
+    <Card
+        ref={cardRef}
+        className="flex flex-col overflow-hidden bg-card h-full w-full cursor-pointer"
+    >
       <CardHeader className="p-0 relative aspect-video">
         <Image
           src={imageSrc}
@@ -65,7 +94,6 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
             <CardDescription>{project.description}</CardDescription>
           </CardContent>
             <CardFooter className="gap-2 mt-auto">
-                {/* --- CAMBIO 4: Los enlaces ahora son dinámicos o tienen un fallback --- */}
                 <Button asChild className="w-full" variant="outline">
                 <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
                     <Github className="mr-2" /> GitHub
@@ -105,7 +133,6 @@ const ZoomEffect = () => {
 
 
 export function ProjectsSection() {
-  // Ya no se requiere filtrar las imágenes de placeholder, ya que ahora se manejan en el componente MUAJAJ 
   return (
     <>
       <ZoomEffect />
