@@ -143,10 +143,10 @@ const CodePenScrollAnimation = () => {
                     z-index: 1;
                     width: 50%; /* Ocupa la mitad izquierda */
                     padding-left: 5rem;
-                    padding-right: 5rem; /* <-- CAMBIO: Añadimos padding derecho */
+                    padding-right: 5rem; /* Añadimos padding derecho */
                     display: flex;
                     align-items: center;
-                    justify-content: flex-end; /* <-- CAMBIO CLAVE: Alineación a la derecha */
+                    justify-content: flex-end; /* Alineación a la derecha */
                 }
                 
                 .gradient-text {
@@ -178,7 +178,7 @@ const CodePenScrollAnimation = () => {
                     justify-content: flex-start; /* Alineación a la izquierda */
                     font-family: 'Geist', sans-serif;
                     font-weight: 600;
-                    font-size: clamp(1.5rem, 4vw, 2.5rem);
+                    font-size: clamp(3rem, 8vw, 6rem); /* <-- CAMBIO: Tamaño de letra igual al 'you can' */
                     list-style: none;
                     padding: 0;
                     margin: 0;
