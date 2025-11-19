@@ -9,9 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
-import { Starfield } from '../ui/starfield';
 import { gsap } from 'gsap';
 
 const projects = [
@@ -110,32 +109,98 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
 );
 };
 
+// --- COMPONENTE DE ANIMACIÓN (COPIADO Y ADAPTADO DEL CODEPEN) ---
+const CodePenScrollAnimation = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
 
-const ZoomEffect = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
+    useEffect(() => {
+        // 1. Inyectamos el CSS del CodePen directamente
+        const styleId = 'codepen-scroll-styles';
+        if (!document.getElementById(styleId)) {
+            const style = document.createElement('style');
+            style.id = styleId;
+            style.innerHTML = `
+                @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+                :root { --start: 0; --end: 360; --lightness: 65%; --base-chroma: 0.3; }
+                ul { --step: calc((var(--end) - var(--start)) / (var(--count) - 1)); }
+                li:not(:last-of-type) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * var(--i)))); }
+                @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
+                    li { opacity: 0.2; animation-name: brighten; animation-fill-mode: both; animation-timing-function: linear; animation-range: cover calc(50% - 1lh) calc(50% + 1lh); animation-timeline: view(); }
+                    @keyframes brighten { 0% { opacity: var(--start-opacity, 0.2); } 50% { opacity: 1; filter: brightness(var(--brightness, 1.2)); } 100% { opacity: var(--end-opacity, 0.2); } }
+                }
+            `;
+            document.head.appendChild(style);
+        }
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 15]);
-  
-  return (
-    <div ref={containerRef} className="h-[200vh] relative">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <motion.div style={{ scale }} className="h-full w-full relative">
-           <Starfield zoom={scale} />
-        </motion.div>
-      </div>
-    </div>
-  );
+        // 2. Aplicamos la lógica JS del CodePen (fallback de GSAP)
+        const supportsScrollTimeline = CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)');
+
+        if (!supportsScrollTimeline) {
+            import('gsap').then((gsapModule) => {
+                const gsap = gsapModule.default;
+                import('gsap/dist/ScrollTrigger').then((ScrollTriggerModule) => {
+                    const ScrollTrigger = ScrollTriggerModule.default;
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    const items = gsap.utils.toArray('.codepen-list li');
+                    gsap.set(items, { opacity: (i) => (i !== 0 ? 0.2 : 1) });
+
+                    const dimmer = gsap.timeline().to(items.slice(1), { opacity: 1, stagger: 0.5 }).to(items.slice(0, items.length - 1), { opacity: 0.2, stagger: 0.5 }, 0);
+                    ScrollTrigger.create({ trigger: items[0], endTrigger: items[items.length - 1], start: 'center center', end: 'center center', animation: dimmer, scrub: 0.2 });
+                });
+            });
+        }
+
+        // Limpieza
+        return () => {
+            const styleElement = document.getElementById(styleId);
+            if (styleElement) {
+                styleElement.remove();
+            }
+        };
+    }, []);
+
+    return (
+        <section ref={containerRef} style={{ minHeight: '100vh', backgroundColor: 'hsl(var(--background))' }}>
+            <div style={{ display: 'flex', lineHeight: '1.25', width: '100%', paddingLeft: '5rem' }}>
+                <h2 style={{ fontFamily: 'Geist, sans-serif', fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '600', margin: '0', background: 'linear-gradient(to right, oklch(var(--lightness) var(--base-chroma) var(--start)), oklch(var(--lightness) var(--base-chroma) var(--end)))', backgroundClip: 'text', color: 'transparent', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    <span aria-hidden="true">you can&nbsp;</span>
+                    <span className="sr-only">you can ship things.</span>
+                </h2>
+                <ul className="codepen-list" aria-hidden="true" style={{ listStyle: 'none', padding: '0', margin: '0', fontFamily: 'Geist, sans-serif', fontWeight: '600', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'oklch(var(--lightness) var(--base-chroma) var(--start))' }} >
+                    <li style={{ '--i': 0 }}>design.</li>
+                    <li style={{ '--i': 1 }}>prototype.</li>
+                    <li style={{ '--i': 2 }}>solve.</li>
+                    <li style={{ '--i': 3 }}>build.</li>
+                    <li style={{ '--i': 4 }}>develop.</li>
+                    <li style={{ '--i': 5 }}>debug.</li>
+                    <li style={{ '--i': 6 }}>learn.</li>
+                    <li style={{ '--i': 7 }}>ship.</li>
+                    <li style={{ '--i': 8 }}>prompt.</li>
+                    <li style={{ '--i': 9 }}>collaborate.</li>
+                    <li style={{ '--i': 10 }}>create.</li>
+                    <li style={{ '--i': 11 }}>inspire.</li>
+                    <li style={{ '--i': 12 }}>follow.</li>
+                    <li style={{ '--i': 13 }}>innovate.</li>
+                    <li style={{ '--i': 14 }}>test.</li>
+                    <li style={{ '--i': 15 }}>optimize.</li>
+                    <li style={{ '--i': 16 }}>teach.</li>
+                    <li style={{ '--i': 17 }}>visualize.</li>
+                    <li style={{ '--i': 18 }}>transform.</li>
+                    <li style={{ '--i': 19 }}>scale.</li>
+                    <li style={{ '--i': 20 }}>do it.</li>
+                </ul>
+            </div>
+        </section>
+    );
 };
 
 
 export function ProjectsSection() {
   return (
     <>
-      <ZoomEffect />
+      {/* <-- AQUÍ PONES EL COMPONENTE DE ANIMACIÓN */}
+      <CodePenScrollAnimation />
       <Section
         id="projects"
         title="Proyectos Destacados"
