@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-## Formulario de contacto (Firebase)
+## Formulario de contacto (Firebase) (completar el read me Angie... no olvidar)
 
 El formulario guarda en Firestore (colección `contact-submissions`) desde el servidor con Firebase Admin.
 
