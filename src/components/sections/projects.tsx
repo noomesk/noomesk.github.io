@@ -112,6 +112,8 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
 // --- COMPONENTE DE ANIMACIÓN (COPIADO Y ADAPTADO DEL CODEPEN) ---
 const CodePenScrollAnimation = () => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const h2Ref = useRef<HTMLHeadingElement>(null);
+    const ulRef = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
         // 1. Inyectamos el CSS del CodePen directamente
@@ -121,13 +123,89 @@ const CodePenScrollAnimation = () => {
             style.id = styleId;
             style.innerHTML = `
                 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
-                :root { --start: 0; --end: 360; --lightness: 65%; --base-chroma: 0.3; }
-                ul { --step: calc((var(--end) - var(--start)) / (var(--count) - 1)); }
-                li:not(:last-of-type) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * var(--i)))); }
-                @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
-                    li { opacity: 0.2; animation-name: brighten; animation-fill-mode: both; animation-timing-function: linear; animation-range: cover calc(50% - 1lh) calc(50% + 1lh); animation-timeline: view(); }
-                    @keyframes brighten { 0% { opacity: var(--start-opacity, 0.2); } 50% { opacity: 1; filter: brightness(var(--brightness, 1.2)); } 100% { opacity: var(--end-opacity, 0.2); } }
+                :root { 
+                    --start: 0; 
+                    --end: 360; 
+                    --lightness: 65%; 
+                    --base-chroma: 0.3; 
                 }
+                
+                .scroll-container {
+                    position: relative;
+                    width: 100%;
+                    height: 2200px; /* Altura total para 22 elementos de 100vh cada uno */
+                }
+                
+                .sticky-text {
+                    position: sticky;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 1;
+                    width: 50%; /* Ocupa la mitad izquierda */
+                    padding-left: 5rem;
+                    display: flex;
+                    align-items: center;
+                }
+                
+                .gradient-text {
+                    background: linear-gradient(to right, 
+                        oklch(var(--lightness) var(--base-chroma) var(--start)), 
+                        oklch(var(--lightness) var(--base-chroma) var(--end)));
+                    background-clip: text;
+                    color: transparent;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+                
+                .scrolling-list {
+                    position: absolute;
+                    top: 0;
+                    left: 50%; /* Empieza en la mitad */
+                    width: 50%; /* Ocupa la mitad derecha */
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    padding-left: 0; /* <-- CAMBIO: Quitamos el padding derecho */
+                    z-index: 2;
+                }
+                
+                .scrolling-list li {
+                    height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start; /* <-- CAMBIO CLAVE: Alineación a la izquierda */
+                    font-family: 'Geist', sans-serif;
+                    font-weight: 600;
+                    font-size: clamp(1.5rem, 4vw, 2.5rem);
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    opacity: 0.2;
+                }
+                
+                /* Colores del arcoíris para cada elemento */
+                .scrolling-list li:nth-child(1) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 0))); }
+                .scrolling-list li:nth-child(2) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 1))); }
+                .scrolling-list li:nth-child(3) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 2))); }
+                .scrolling-list li:nth-child(4) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 3))); }
+                .scrolling-list li:nth-child(5) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 4))); }
+                .scrolling-list li:nth-child(6) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 5))); }
+                .scrolling-list li:nth-child(7) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 6))); }
+                .scrolling-list li:nth-child(8) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 7))); }
+                .scrolling-list li:nth-child(9) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 8))); }
+                .scrolling-list li:nth-child(10) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 9))); }
+                .scrolling-list li:nth-child(11) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 10))); }
+                .scrolling-list li:nth-child(12) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 11))); }
+                .scrolling-list li:nth-child(13) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 12))); }
+                .scrolling-list li:nth-child(14) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 13))); }
+                .scrolling-list li:nth-child(15) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 14))); }
+                .scrolling-list li:nth-child(16) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 15))); }
+                .scrolling-list li:nth-child(17) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 16))); }
+                .scrolling-list li:nth-child(18) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 17))); }
+                .scrolling-list li:nth-child(19) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 18))); }
+                .scrolling-list li:nth-child(20) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 19))); }
+                .scrolling-list li:nth-child(21) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 20))); }
+                .scrolling-list li:nth-child(22) { color: oklch(var(--lightness) var(--base-chroma) calc(var(--start) + (var(--step) * 21))); }
             `;
             document.head.appendChild(style);
         }
@@ -142,11 +220,59 @@ const CodePenScrollAnimation = () => {
                     const ScrollTrigger = ScrollTriggerModule.default;
                     gsap.registerPlugin(ScrollTrigger);
 
-                    const items = gsap.utils.toArray('.codepen-list li');
-                    gsap.set(items, { opacity: (i) => (i !== 0 ? 0.2 : 1) });
-
-                    const dimmer = gsap.timeline().to(items.slice(1), { opacity: 1, stagger: 0.5 }).to(items.slice(0, items.length - 1), { opacity: 0.2, stagger: 0.5 }, 0);
-                    ScrollTrigger.create({ trigger: items[0], endTrigger: items[items.length - 1], start: 'center center', end: 'center center', animation: dimmer, scrub: 0.2 });
+                    const items = gsap.utils.toArray('.scrolling-list li');
+                    
+                    // Animación de opacidad para los elementos de la lista
+                    items.forEach((item, index) => {
+                        ScrollTrigger.create({
+                            trigger: item,
+                            start: "top center",
+                            end: "bottom center",
+                            onEnter: () => {
+                                gsap.to(item, {
+                                    opacity: 1,
+                                    filter: "brightness(1.2)",
+                                    duration: 0.3
+                                });
+                            },
+                            onLeave: () => {
+                                gsap.to(item, {
+                                    opacity: 0.2,
+                                    filter: "brightness(1)",
+                                    duration: 0.3
+                                });
+                            },
+                            onEnterBack: () => {
+                                gsap.to(item, {
+                                    opacity: 1,
+                                    filter: "brightness(1.2)",
+                                    duration: 0.3
+                                });
+                            },
+                            onLeaveBack: () => {
+                                gsap.to(item, {
+                                    opacity: 0.2,
+                                    filter: "brightness(1)",
+                                    duration: 0.3
+                                });
+                            }
+                        });
+                    });
+                    
+                    // Animación para el gradiente del texto
+                    const textGradient = gsap.timeline()
+                        .to('.gradient-text', {
+                            backgroundPosition: "100% 0%",
+                            ease: "none"
+                        });
+                    
+                    ScrollTrigger.create({
+                        trigger: ".scroll-container",
+                        start: "top top",
+                        end: "bottom bottom",
+                        animation: textGradient,
+                        scrub: 0.2
+                    });
                 });
             });
         }
@@ -161,36 +287,43 @@ const CodePenScrollAnimation = () => {
     }, []);
 
     return (
-        <section ref={containerRef} style={{ minHeight: '100vh', backgroundColor: 'hsl(var(--background))' }}>
-            <div style={{ display: 'flex', lineHeight: '1.25', width: '100%', paddingLeft: '5rem' }}>
-                <h2 style={{ fontFamily: 'Geist, sans-serif', fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '600', margin: '0', background: 'linear-gradient(to right, oklch(var(--lightness) var(--base-chroma) var(--start)), oklch(var(--lightness) var(--base-chroma) var(--end)))', backgroundClip: 'text', color: 'transparent', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        <section ref={containerRef} className="scroll-container" style={{ backgroundColor: 'hsl(var(--background))' }}>
+            <div className="sticky-text">
+                <h2 ref={h2Ref} className="gradient-text" style={{ 
+                    fontFamily: 'Geist, sans-serif', 
+                    fontSize: 'clamp(3rem, 8vw, 6rem)', 
+                    fontWeight: '600', 
+                    margin: '0',
+                    display: 'inline-block'
+                }}>
                     <span aria-hidden="true">you can&nbsp;</span>
                     <span className="sr-only">you can ship things.</span>
                 </h2>
-                <ul className="codepen-list" aria-hidden="true" style={{ listStyle: 'none', padding: '0', margin: '0', fontFamily: 'Geist, sans-serif', fontWeight: '600', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', color: 'oklch(var(--lightness) var(--base-chroma) var(--start))' }} >
-                    <li style={{ '--i': 0 }}>design.</li>
-                    <li style={{ '--i': 1 }}>prototype.</li>
-                    <li style={{ '--i': 2 }}>solve.</li>
-                    <li style={{ '--i': 3 }}>build.</li>
-                    <li style={{ '--i': 4 }}>develop.</li>
-                    <li style={{ '--i': 5 }}>debug.</li>
-                    <li style={{ '--i': 6 }}>learn.</li>
-                    <li style={{ '--i': 7 }}>ship.</li>
-                    <li style={{ '--i': 8 }}>prompt.</li>
-                    <li style={{ '--i': 9 }}>collaborate.</li>
-                    <li style={{ '--i': 10 }}>create.</li>
-                    <li style={{ '--i': 11 }}>inspire.</li>
-                    <li style={{ '--i': 12 }}>follow.</li>
-                    <li style={{ '--i': 13 }}>innovate.</li>
-                    <li style={{ '--i': 14 }}>test.</li>
-                    <li style={{ '--i': 15 }}>optimize.</li>
-                    <li style={{ '--i': 16 }}>teach.</li>
-                    <li style={{ '--i': 17 }}>visualize.</li>
-                    <li style={{ '--i': 18 }}>transform.</li>
-                    <li style={{ '--i': 19 }}>scale.</li>
-                    <li style={{ '--i': 20 }}>do it.</li>
-                </ul>
             </div>
+            <ul ref={ulRef} className="scrolling-list" aria-hidden="true" style={{ '--step': 'calc((360 - 0) / (22 - 1))' } as React.CSSProperties}>
+                <li style={{ '--i': 0 } as React.CSSProperties}>design.</li>
+                <li style={{ '--i': 1 } as React.CSSProperties}>prototype.</li>
+                <li style={{ '--i': 2 } as React.CSSProperties}>solve.</li>
+                <li style={{ '--i': 3 } as React.CSSProperties}>build.</li>
+                <li style={{ '--i': 4 } as React.CSSProperties}>develop.</li>
+                <li style={{ '--i': 5 } as React.CSSProperties}>debug.</li>
+                <li style={{ '--i': 6 } as React.CSSProperties}>learn.</li>
+                <li style={{ '--i': 7 } as React.CSSProperties}>cook.</li>
+                <li style={{ '--i': 8 } as React.CSSProperties}>ship.</li>
+                <li style={{ '--i': 9 } as React.CSSProperties}>prompt.</li>
+                <li style={{ '--i': 10 } as React.CSSProperties}>collaborate.</li>
+                <li style={{ '--i': 11 } as React.CSSProperties}>create.</li>
+                <li style={{ '--i': 12 } as React.CSSProperties}>inspire.</li>
+                <li style={{ '--i': 13 } as React.CSSProperties}>follow.</li>
+                <li style={{ '--i': 14 } as React.CSSProperties}>innovate.</li>
+                <li style={{ '--i': 15 } as React.CSSProperties}>test.</li>
+                <li style={{ '--i': 16 } as React.CSSProperties}>optimize.</li>
+                <li style={{ '--i': 17 } as React.CSSProperties}>teach.</li>
+                <li style={{ '--i': 18 } as React.CSSProperties}>visualize.</li>
+                <li style={{ '--i': 19 } as React.CSSProperties}>transform.</li>
+                <li style={{ '--i': 20 } as React.CSSProperties}>scale.</li>
+                <li style={{ '--i': 21 } as React.CSSProperties}>do it.</li>
+            </ul>
         </section>
     );
 };
