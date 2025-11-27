@@ -6,7 +6,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { Button } from '@/components/ui/button';
 import { Section } from './section';
 import { Badge } from '@/components/ui/badge';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+// No necesitas PlaceHolderImages si defines la imagen en cada proyecto
+// import { PlaceHolderImages } from '@/lib/placeholder-images'; 
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -17,22 +18,27 @@ const projects = [
   {
     id: 'project-1',
     title: 'EndModa',
-    description: 'Tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
+    description: 'Frontend de tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
     tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
+    image: '/images/endmoda-showcase.png', // <-- CAMBIO 1: Imagen definida aquí
     githubUrl: 'https://github.com/noomesk/Endmoda',
     liveUrl: 'https://endmoda.netlify.app',
   },
   {
     id: 'project-4',
-    title: 'Portal de Ciberseguridad',
-    description: 'Una plataforma educativa para aprender sobre ciberseguridad, con tutoriales interactivos, retos de CTF y análisis de vulnerabilidades.',
-    tags: ['Python', 'Django', 'Docker', 'React'],
+    title: 'Linux Hardening Toolkit',
+    description: 'Una suite de automatización de ciberseguridad diseñada para analizar y fortalecer sistemas Linux. Ejuta escaneos de puertos, verifica permisos peligrosos, gestiona servicios y genera reportes de seguridad completos.',
+    tags: ['Next.js & React', 'Node.js & Express', 'Python', 'Render & Vercel'],
+    image: '/images/linux-hardening-toolkit.png', // <-- CAMBIO 1: Imagen definida aquí
+    githubUrl: 'https://github.com/noomesk/linux-hardening-toolkit',
+    liveUrl: 'https://linux-hardening-toolkit.vercel.app',
   },
   {
     id: 'project-5',
     title: 'Análisis Bioinformático',
     description: 'Una aplicación web para el análisis de secuencias genómicas, que ofrece herramientas de alineación, visualización de filogenia y modelado de proteínas.',
     tags: ['Python', 'Biopython', 'Flask', 'D3.js'],
+    image: '/images/bioinformatics-placeholder.png', // <-- Puedes añadir una imagen para este también
   },
 ];
 
@@ -66,8 +72,9 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
         };
     }, []);
 
-    const isEndModa = project.id === 'project-1';
-    const imageSrc = isEndModa ? '/images/endmoda-showcase.png' : (PlaceHolderImages.find(img => img.id === project.id)?.imageUrl || '');
+    // CAMBIO 2: Lógica de imagen simplificada
+    // Usa la imagen del proyecto o una por defecto si no existe.
+    const imageSrc = project.image || '/images/placeholder-default.png'; 
 
     return (
     <Card
@@ -109,7 +116,7 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
 );
 };
 
-// --- COMPONENTE DE ANIMACIÓN (COPIADO Y ADAPTADO DEL CODEPEN) ---
+// --- COMPONENTE DE ANIMACIÓN (SIN CAMBIOS) ---
 const CodePenScrollAnimation = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const h2Ref = useRef<HTMLHeadingElement>(null);
@@ -122,6 +129,11 @@ const CodePenScrollAnimation = () => {
             const style = document.createElement('style');
             style.id = styleId;
             style.innerHTML = `
+                /* <-- CAMBIO CLAVE: Aseguramos posición para el cálculo de scroll */
+                html, body {
+                    position: relative;
+                }
+
                 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
                 :root { 
                     --start: 0; 
@@ -134,6 +146,7 @@ const CodePenScrollAnimation = () => {
                     position: relative;
                     width: 100%;
                     height: 2200px; /* Altura total para 22 elementos de 100vh cada uno */
+                    z-index: 10; /* <-- CAMBIO CLAVE: Poner la animación por encima de todo */
                 }
                 
                 .sticky-text {
@@ -178,7 +191,7 @@ const CodePenScrollAnimation = () => {
                     justify-content: flex-start; /* Alineación a la izquierda */
                     font-family: 'Geist', sans-serif;
                     font-weight: 600;
-                    font-size: clamp(3rem, 8vw, 6rem); /* <-- CAMBIO: Tamaño de letra igual al 'you can' */
+                    font-size: clamp(3rem, 8vw, 6rem); /* Tamaño de letra igual al 'you can' */
                     list-style: none;
                     padding: 0;
                     margin: 0;
@@ -224,44 +237,50 @@ const CodePenScrollAnimation = () => {
 
                     const items = gsap.utils.toArray('.scrolling-list li');
                     
-                    // Animación de opacidad para los elementos de la lista
-                    items.forEach((item, index) => {
-                        ScrollTrigger.create({
-                            trigger: item,
-                            start: "top center",
-                            end: "bottom center",
-                            onEnter: () => {
-                                gsap.to(item, {
-                                    opacity: 1,
-                                    filter: "brightness(1.2)",
-                                    duration: 0.3
-                                });
-                            },
-                            onLeave: () => {
-                                gsap.to(item, {
-                                    opacity: 0.2,
-                                    filter: "brightness(1)",
-                                    duration: 0.3
-                                });
-                            },
-                            onEnterBack: () => {
-                                gsap.to(item, {
-                                    opacity: 1,
-                                    filter: "brightness(1.2)",
-                                    duration: 0.3
-                                });
-                            },
-                            onLeaveBack: () => {
-                                gsap.to(item, {
-                                    opacity: 0.2,
-                                    filter: "brightness(1)",
-                                    duration: 0.3
-                                });
-                            }
-                        });
+                    // <-- DEPURACIÓN: Vamos a ver si encuentra los elementos
+                    console.log("GSAP encontró", items.length, "elementos '.scrolling-list li'");
+
+                    // Forzamos la primera palabra a estar iluminada para empezar
+                    if (items.length > 0) {
+                        gsap.set(items[0], { opacity: 1, filter: "brightness(1.2)" });
+                    }
+                    
+                    // <-- NUEVO ENFOQUE: Animación maestra con stagger
+                    const tl = gsap.timeline({
+                        paused: true
+                    });
+
+                    // Animamos cada elemento para que se ilumine y se apague
+                    items.forEach((item, i) => {
+                        if (i === 0) return; // Ya la configuramos arriba
+                        
+                        tl.to(item, { 
+                            opacity: 1, 
+                            filter: "brightness(1.2)", 
+                            duration: 0.4, 
+                            ease: "power2.inOut"
+                        }, i * 0.1) // Cada palabra empieza 0.1s después de la anterior
+                         .to(item, { 
+                            opacity: 0.2, 
+                            filter: "brightness(1)", 
+                            duration: 0.4, 
+                            ease: "power2.inOut"
+                        }, i * 0.1 + 0.4); // Se apaga 0.4s después de encenderse
+                    });
+
+                    // Conectamos toda la timeline al scroll del contenedor
+                    ScrollTrigger.create({
+                        trigger: ".scroll-container",
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: true, // Hace que la animación siga suavemente el scroll
+                        animation: tl,
+                        // <-- DEPURACIÓN: Añadimos callbacks para ver si se activa
+                        onRefresh: () => console.log("ScrollTrigger refrescado"),
+                        onUpdate: (self) => console.log("Progreso del scroll:", self.progress.toFixed(2)),
                     });
                     
-                    // Animación para el gradiente del texto
+                    // Animación para el gradiente del texto (sin cambios)
                     const textGradient = gsap.timeline()
                         .to('.gradient-text', {
                             backgroundPosition: "100% 0%",
