@@ -35,10 +35,13 @@ const projects = [
   },
   {
     id: 'project-5',
-    title: 'Análisis Bioinformático',
-    description: 'Una aplicación web para el análisis de secuencias genómicas, que ofrece herramientas de alineación, visualización de filogenia y modelado de proteínas.',
-    tags: ['Python', 'Biopython', 'Flask', 'D3.js'],
-    image: '/images/bioinformatics-placeholder.png', // <-- Puedes añadir una imagen para este también
+    title: 'Genome Cleaner',
+    description: 'Herramienta profesional de bioinformática para validar, limpiar y analizar secuencias genómicas (DNA). Procesa archivos FASTA/FASTQ con detección automática de formato, sanitización de bases inválidas, análisis de contenido GC y generación de reportes completos.',
+    tags: ['Python', 'Streamlit', 'Pandas', 'Biopython'],
+    image: '/images/genome-cleaner.png',
+    githubUrl: 'https://github.com/noomesk/genome-cleaner',
+    liveUrl: 'https://genomecleaner.streamlit.app',
+    // videoUrl: '/videos/genome-cleaner-demo.mp4', // Descomentar cuando se suba el video
   },
 ];
 
