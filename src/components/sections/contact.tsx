@@ -52,7 +52,7 @@ export function ContactSection() {
   // Aki usé el hook de Formspree que SÍ funciona jsjaja 
   const [state, handleSubmit] = useForm("xqagrrgr");
 
-  // Si el envío fue exitoso, c muestra un mensaje de éxito y resetea el formulario
+  // Si el envío fue exitoso, c muestra un mensaje de éxito y resetea el formulario y sha 
   if (state.succeeded) {
       return (
         <Section

@@ -15,34 +15,34 @@ import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 
 const projects = [
-  {
-    id: 'project-1',
-    title: 'EndModa',
-    description: 'Frontend de tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
-    tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
-    image: '/images/endmoda-showcase.png', // <-- CAMBIO 1: Imagen definida aquí
-    githubUrl: 'https://github.com/noomesk/Endmoda',
-    liveUrl: 'https://endmoda.netlify.app',
-  },
-  {
-    id: 'project-4',
-    title: 'Linux Hardening Toolkit',
-    description: 'Una suite de automatización de ciberseguridad diseñada para analizar y fortalecer sistemas Linux. Ejuta escaneos de puertos, verifica permisos peligrosos, gestiona servicios y genera reportes de seguridad completos.',
-    tags: ['Next.js & React', 'Node.js & Express', 'Python', 'Render & Vercel'],
-    image: '/images/linux-hardening-toolkit.png', // <-- CAMBIO 1: Imagen definida aquí
-    githubUrl: 'https://github.com/noomesk/linux-hardening-toolkit',
-    liveUrl: 'https://linux-hardening-toolkit.vercel.app',
-  },
-  {
-    id: 'project-5',
-    title: 'Genome Cleaner',
-    description: 'Herramienta profesional de bioinformática para validar, limpiar y analizar secuencias genómicas (DNA). Procesa archivos FASTA/FASTQ con detección automática de formato, sanitización de bases inválidas, análisis de contenido GC y generación de reportes completos.',
-    tags: ['Python', 'Streamlit', 'Pandas', 'Biopython'],
-    image: '/images/genome-cleaner.png',
-    githubUrl: 'https://github.com/noomesk/genome-cleaner',
-    liveUrl: 'https://genomecleaner.streamlit.app',
-    // videoUrl: '/videos/genome-cleaner-demo.mp4', // Descomentar cuando se suba el video
-  },
+    {
+        id: 'project-1',
+        title: 'EndModa',
+        description: 'Frontend de tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
+        tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
+        image: '/images/endmoda-showcase.png',
+        githubUrl: 'https://github.com/noomesk/Endmoda',
+        liveUrl: 'https://endmoda.netlify.app',
+    },
+    {
+        id: 'project-4',
+        title: 'Linux Hardening Toolkit',
+        description: 'Una suite de automatización de ciberseguridad diseñada para analizar y fortalecer sistemas Linux. Ejuta escaneos de puertos, verifica permisos peligrosos, gestiona servicios y genera reportes de seguridad completos.',
+        tags: ['Next.js & React', 'Node.js & Express', 'Python', 'Render & Vercel'],
+        image: '/images/linux-hardening-toolkit.png',
+        githubUrl: 'https://github.com/noomesk/linux-hardening-toolkit',
+        liveUrl: 'https://linux-hardening-toolkit.vercel.app',
+    },
+    {
+        id: 'project-5',
+        title: 'Genome Cleaner',
+        description: 'Herramienta profesional de bioinformática para validar, limpiar y analizar secuencias genómicas (DNA). Procesa archivos FASTA/FASTQ con detección automática de formato, sanitización de bases inválidas, análisis de contenido GC y generación de reportes completos.',
+        tags: ['Python', 'Streamlit', 'Pandas', 'Biopython'],
+        image: '/images/genome-cleaner.png',
+        githubUrl: 'https://github.com/noomesk/genome-cleaner',
+        liveUrl: 'https://genomecleaner.streamlit.app',
+        // videoUrl: '/videos/genome-cleaner-demo.mp4', // Descomentar cuando se suba el video
+    },
 ];
 
 const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
@@ -75,51 +75,50 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
         };
     }, []);
 
-    // CAMBIO 2: Lógica de imagen simplificada
     // Usa la imagen del proyecto o una por defecto si no existe.
-    const imageSrc = project.image || '/images/placeholder-default.png'; 
+    const imageSrc = project.image || '/images/placeholder-default.png';
 
     return (
-    <Card
-        ref={cardRef}
-        className="flex flex-col overflow-hidden bg-card h-full w-full cursor-pointer"
-    >
-      <CardHeader className="p-0 relative aspect-video">
-        <Image
-          src={imageSrc}
-          alt={`Vista previa de ${project.title}`}
-          fill
-          className="object-cover"
-        />
-      </CardHeader>
-        <>
-          <CardContent className="flex-grow pt-6">
-            <CardTitle className="font-headline text-xl mb-2 uppercase">{project.title}</CardTitle>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.tags.map(tag => (
-                <Badge key={tag} variant="secondary">{tag}</Badge>
-              ))}
-            </div>
-            <CardDescription>{project.description}</CardDescription>
-          </CardContent>
-            <CardFooter className="gap-2 mt-auto">
-                <Button asChild className="w-full" variant="outline">
-                <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
-                    <Github className="mr-2" /> GitHub
-                </Link>
-                </Button>
-                <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                <Link href={project.liveUrl || "#"} target="_blank">
-                    <ExternalLink className="mr-2" /> Demo en Vivo
-                </Link>
-                </Button>
-            </CardFooter>
-        </>
-    </Card>
-);
+        <Card
+            ref={cardRef}
+            className="flex flex-col overflow-hidden bg-card h-full w-full cursor-pointer"
+        >
+            <CardHeader className="p-0 relative aspect-video">
+                <Image
+                    src={imageSrc}
+                    alt={`Vista previa de ${project.title}`}
+                    fill
+                    className="object-cover"
+                />
+            </CardHeader>
+            <>
+                <CardContent className="flex-grow pt-6">
+                    <CardTitle className="font-headline text-xl mb-2 uppercase">{project.title}</CardTitle>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tags.map(tag => (
+                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                        ))}
+                    </div>
+                    <CardDescription>{project.description}</CardDescription>
+                </CardContent>
+                <CardFooter className="gap-2 mt-auto">
+                    <Button asChild className="w-full" variant="outline">
+                        <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
+                            <Github className="mr-2" /> GitHub
+                        </Link>
+                    </Button>
+                    <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                        <Link href={project.liveUrl || "#"} target="_blank">
+                            <ExternalLink className="mr-2" /> Demo en Vivo
+                        </Link>
+                    </Button>
+                </CardFooter>
+            </>
+        </Card>
+    );
 };
 
-// --- COMPONENTE DE ANIMACIÓN (SIN CAMBIOS) ---
+// --- COMPONENTE DE ANIMACIÓN ---
 const CodePenScrollAnimation = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const h2Ref = useRef<HTMLHeadingElement>(null);
@@ -239,57 +238,67 @@ const CodePenScrollAnimation = () => {
                     gsap.registerPlugin(ScrollTrigger);
 
                     const items = gsap.utils.toArray('.scrolling-list li');
-                    
-                    // <-- DEPURACIÓN: Vamos a ver si encuentra los elementos
-                    console.log("GSAP encontró", items.length, "elementos '.scrolling-list li'");
 
-                    // Forzamos la primera palabra a estar iluminada para empezar
-                    if (items.length > 0) {
-                        gsap.set(items[0], { opacity: 1, filter: "brightness(1.2)" });
-                    }
-                    
-                    // <-- NUEVO ENFOQUE: Animación maestra con stagger
-                    const tl = gsap.timeline({
-                        paused: true
+                    // Configuración inicial: todos opacos
+                    gsap.set(items, { opacity: 0.2, filter: "brightness(1)" });
+
+                    // Para cada palabra, creamos un trigger individual
+                    items.forEach((item: any) => {
+                        ScrollTrigger.create({
+                            trigger: item,
+                            start: "center center",
+                            end: "center center",
+                            scrub: true,
+                            markers: false,
+
+                            onEnter: () => {
+                                gsap.to(item, {
+                                    opacity: 1,
+                                    filter: "brightness(1.5)",
+                                    scale: 1.1,
+                                    duration: 0.2,
+                                    ease: "power2.out"
+                                });
+                            },
+
+                            onLeave: () => {
+                                gsap.to(item, {
+                                    opacity: 0.2,
+                                    filter: "brightness(1)",
+                                    scale: 1,
+                                    duration: 0.2,
+                                    ease: "power2.out"
+                                });
+                            },
+
+                            onEnterBack: () => {
+                                gsap.to(item, {
+                                    opacity: 1,
+                                    filter: "brightness(1.5)",
+                                    scale: 1.1,
+                                    duration: 0.2,
+                                    ease: "power2.out"
+                                });
+                            },
+
+                            onLeaveBack: () => {
+                                gsap.to(item, {
+                                    opacity: 0.2,
+                                    filter: "brightness(1)",
+                                    scale: 1,
+                                    duration: 0.2,
+                                    ease: "power2.out"
+                                });
+                            }
+                        });
                     });
 
-                    // Animamos cada elemento para que se ilumine y se apague
-                    items.forEach((item, i) => {
-                        if (i === 0) return; // Ya la configuramos arriba
-                        
-                        tl.to(item, { 
-                            opacity: 1, 
-                            filter: "brightness(1.2)", 
-                            duration: 0.4, 
-                            ease: "power2.inOut"
-                        }, i * 0.1) // Cada palabra empieza 0.1s después de la anterior
-                         .to(item, { 
-                            opacity: 0.2, 
-                            filter: "brightness(1)", 
-                            duration: 0.4, 
-                            ease: "power2.inOut"
-                        }, i * 0.1 + 0.4); // Se apaga 0.4s después de encenderse
-                    });
-
-                    // Conectamos toda la timeline al scroll del contenedor
-                    ScrollTrigger.create({
-                        trigger: ".scroll-container",
-                        start: "top top",
-                        end: "bottom bottom",
-                        scrub: true, // Hace que la animación siga suavemente el scroll
-                        animation: tl,
-                        // <-- DEPURACIÓN: Añadimos callbacks para ver si se activa
-                        onRefresh: () => console.log("ScrollTrigger refrescado"),
-                        onUpdate: (self) => console.log("Progreso del scroll:", self.progress.toFixed(2)),
-                    });
-                    
-                    // Animación para el gradiente del texto (sin cambios)
                     const textGradient = gsap.timeline()
                         .to('.gradient-text', {
                             backgroundPosition: "100% 0%",
                             ease: "none"
                         });
-                    
+
                     ScrollTrigger.create({
                         trigger: ".scroll-container",
                         start: "top top",
@@ -313,10 +322,10 @@ const CodePenScrollAnimation = () => {
     return (
         <section ref={containerRef} className="scroll-container" style={{ backgroundColor: 'hsl(var(--background))' }}>
             <div className="sticky-text">
-                <h2 ref={h2Ref} className="gradient-text" style={{ 
-                    fontFamily: 'Geist, sans-serif', 
-                    fontSize: 'clamp(3rem, 8vw, 6rem)', 
-                    fontWeight: '600', 
+                <h2 ref={h2Ref} className="gradient-text" style={{
+                    fontFamily: 'Geist, sans-serif',
+                    fontSize: 'clamp(3rem, 8vw, 6rem)',
+                    fontWeight: '600',
                     margin: '0',
                     display: 'inline-block'
                 }}>
@@ -354,31 +363,31 @@ const CodePenScrollAnimation = () => {
 
 
 export function ProjectsSection() {
-  return (
-    <>
-      {/* <-- AQUÍ PONES EL COMPONENTE DE ANIMACIÓN */}
-      <CodePenScrollAnimation />
-      <Section
-        id="projects"
-        title="Proyectos Destacados"
-        description="Aquí hay algunos de los proyectos de los que estoy orgullosa. Cada uno fue un desafío único y una gran experiencia de aprendizaje."
-        className="relative z-10 bg-background"
-      >
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  className={cn("animated-section-element")}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.2, duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
-                >
-                  <ProjectCard project={project} />
-                </motion.div>
-            ))}
-          </div>
-      </Section>
-    </>
-  );
+    return (
+        <>
+            {/* <-- AQUÍ PONES EL COMPONENTE DE ANIMACIÓN */}
+            <CodePenScrollAnimation />
+            <Section
+                id="projects"
+                title="Proyectos Destacados"
+                description="Aquí hay algunos de los proyectos de los que estoy orgullosa. Cada uno fue un desafío único y una gran experiencia de aprendizaje."
+                className="relative z-10 bg-background"
+            >
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {projects.map((project, index) => (
+                        <motion.div
+                            key={project.id}
+                            className={cn("animated-section-element")}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            transition={{ delay: index * 0.2, duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
+                        >
+                            <ProjectCard project={project} />
+                        </motion.div>
+                    ))}
+                </div>
+            </Section>
+        </>
+    );
 }
