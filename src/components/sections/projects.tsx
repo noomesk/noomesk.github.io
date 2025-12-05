@@ -13,7 +13,7 @@ import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import { Starfield } from '../ui/starfield';
 
-// --- CAMBIO 1: He actualizado la información del primer proyecto para que sea EndModa ---
+// --- CAMBIO 1: Aqui act. la información del primer proyecto para que sea EndModa ---
 const projects = [
   {
     id: 'project-1', // Ete es el mismo id, lo dejé asi al final para que la lógica de imagen funcione eeeeej
@@ -38,7 +38,7 @@ const projects = [
   },
 ];
 
-// --- CAMBIO 3: He modificado ProjectCard para que use la imagen específica (oublic/images) y los enlaces ---
+// --- CAMBIO 3: Modificación de ProjectCard para que use la imagen específica (public/images) y los enlaces q ponga ---
 const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
     // Lógica para la imagen: si es EndModa, usa la nuestra. Si no, usa el placeholder.
     const isEndModa = project.id === 'project-1';
@@ -65,7 +65,7 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
             <CardDescription>{project.description}</CardDescription>
           </CardContent>
             <CardFooter className="gap-2 mt-auto">
-                {/* --- CAMBIO 4: Los enlaces ahora son dinámicos o tienen un fallback --- */}
+                {/* --- CAMBIO 4: Los enlaces ahora son dinámicos o tienen un fallback jejj --- */}
                 <Button asChild className="w-full" variant="outline">
                 <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
                     <Github className="mr-2" /> GitHub
