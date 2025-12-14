@@ -1,24 +1,13 @@
-# Firebase Studio Anshhhhh
+#  Portafolio Personal - noomesk
 
-This is a Next.js portfolio.
+¡Holaaaaaaaaaaaaaa ¿qué onda?
+Bienvenido a mi portafolio personal! Un espacio seguro donde la innovación y la creatividad se encuentran para crear experiencias digitales interesantes. Este proyecto está construido con tecnologías modernas y muestra mis habilidades como desarrolladora full-stack.
 
-## Desarrollo
+## Características Principales
 
-```bash
-npm install
-npm run dev
-```
+- **Diseño Moderno y Responsivo**: Interfaz de usuario atractiva y completamente adaptable a cualquier dispositivo.
+- **Asesor de IA Integrado**: Herramienta interactiva que sugiere mejoras de código en tiempo real.
+- **Galería de Proyectos**: Muestra mis trabajos más destacados con descripciones detalladas y tecnologías utilizadas.
+- **Sección de Habilidades**: Presentación visual de mis competencias técnicas en desarrollo web, diseño UI/UX, ciberseguridad y bioinformática.
+- **Formulario de Contacto**: Sistema de mensajería integrado para una comunicación directa.
 
-## Formulario de contacto (Firebase) (completar el read me Angie... no olvidar)
-
-El formulario guarda en Firestore (colección `contact-submissions`) desde el servidor con Firebase Admin.
-
-1. Crea un proyecto Firebase y habilita Firestore.
-2. Crea una Service Account y descarga la JSON key.
-3. Variables de entorno requeridas (configúralas en Vercel → Project Settings → Environment Variables):
-   - `FIREBASE_PROJECT_ID`
-   - `FIREBASE_CLIENT_EMAIL`
-   - `FIREBASE_PRIVATE_KEY` (reemplaza saltos de línea por `\\n`).
-4. Redeploy.
-
-El server action `saveContactSubmission` usará estas variables para escribir en Firestore.
