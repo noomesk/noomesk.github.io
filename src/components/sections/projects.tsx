@@ -6,24 +6,19 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { Button } from '@/components/ui/button';
 import { Section } from './section';
 import { Badge } from '@/components/ui/badge';
-// No necesitas PlaceHolderImages si defines la imagen en cada proyecto
-// import { PlaceHolderImages } from '@/lib/placeholder-images'; 
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 
-<<<<<<< HEAD
 // --- CAMBIO 1: Aqui act. la información del primer proyecto para que sea EndModa ---
-=======
->>>>>>> 29ecff976f34c6f49e5ac2fef2af2f01b130648a
 const projects = [
   {
     id: 'project-1',
     title: 'EndModa',
     description: 'Frontend de tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
-    tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
+    tags: ['Next.js', 'Tailwind CSS', 'React', 'Vercel'],
     image: '/images/endmoda-showcase.png', // <-- CAMBIO 1: Imagen definida aquí
     githubUrl: 'https://github.com/noomesk/Endmoda',
     liveUrl: 'https://endmoda.vercel.app/',
@@ -49,10 +44,7 @@ const projects = [
   },
 ];
 
-<<<<<<< HEAD
 // --- CAMBIO 3: Modificación de ProjectCard para que use la imagen específica (public/images) y los enlaces q ponga ---
-=======
->>>>>>> 29ecff976f34c6f49e5ac2fef2af2f01b130648a
 const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -111,10 +103,7 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
             <CardDescription>{project.description}</CardDescription>
           </CardContent>
             <CardFooter className="gap-2 mt-auto">
-<<<<<<< HEAD
                 {/* --- CAMBIO 4: Los enlaces ahora son dinámicos o tienen un fallback jejj --- */}
-=======
->>>>>>> 29ecff976f34c6f49e5ac2fef2af2f01b130648a
                 <Button asChild className="w-full" variant="outline">
                 <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
                     <Github className="mr-2" /> GitHub
@@ -366,7 +355,7 @@ const CodePenScrollAnimation = () => {
 
 
 export function ProjectsSection() {
-  return (
+ return (
     <>
       {/* <-- AQUÍ PONES EL COMPONENTE DE ANIMACIÓN */}
       <CodePenScrollAnimation />
