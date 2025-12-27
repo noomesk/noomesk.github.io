@@ -3,7 +3,7 @@
 ¡Holaaaaaaaaaaaaaa ¿qué onda?
 Bienvenido a mi portafolio personal! Un espacio seguro donde la innovación y la creatividad se encuentran para crear experiencias digitales interesantes. Este proyecto está construido con tecnologías modernas y muestra mis habilidades como desarrolladora full-stack.
 
-## Características Principales
+## aracterísticas Principales
 
 - **Diseño Moderno y Responsivo**: Interfaz de usuario atractiva y completamente adaptable a cualquier dispositivo.
 - **Asesor de IA Integrado**: Herramienta interactiva que sugiere mejoras de código en tiempo real.
