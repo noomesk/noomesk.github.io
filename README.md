@@ -35,4 +35,6 @@ Bienvenido a mi portafolio personal! Un espacio seguro donde la innovación y la
 1. Clona el repositorio:
    ```bash
    git clone [URL_DEL_REPOSITORIO]
-   cd PORTAFOLIO-FINAL
+
+## Live Demo
+Puedes ver el proyecto funcionando aquí: https://noomesk.vercel.app
