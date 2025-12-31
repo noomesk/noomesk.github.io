@@ -147,8 +147,8 @@ const CodePenScrollAnimation = () => {
                 .scroll-container {
                     position: relative;
                     width: 100%;
-                    height: 2200px; /* Altura total para 22 elementos de 100vh cada uno */
-                    z-index: 10; /* <-- CAMBIO CLAVE: Poner la animación por encima de todo */
+                    height: 200vh; /* Reducido drásticamente */
+                    z-index: 1; /* Reducido para evitar conflictos */
                 }
                 
                 .sticky-text {
@@ -230,7 +230,34 @@ const CodePenScrollAnimation = () => {
         // 2. Aplicamos la lógica JS del CodePen (fallback de GSAP)
         const supportsScrollTimeline = CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)');
 
-        if (!supportsScrollTimeline) {
+        if (supportsScrollTimeline) {
+            // Para navegadores modernos, usamos CSS puro
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
+                    .scrolling-list li {
+                        animation: brighten 1s ease-in-out;
+                        animation-timeline: view();
+                        animation-range: cover 45% cover 55%;
+                    }
+                    
+                    @keyframes brighten {
+                        0%, 100% { 
+                            opacity: 0.2; 
+                            filter: brightness(1); 
+                            transform: scale(1); 
+                        }
+                        50% { 
+                            opacity: 1; 
+                            filter: brightness(1.5); 
+                            transform: scale(1.1); 
+                        }
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        } else {
+            // Fallback para navegadores antiguos
             import('gsap').then((gsapModule) => {
                 const gsap = gsapModule.default;
                 import('gsap/dist/ScrollTrigger').then((ScrollTriggerModule) => {
@@ -242,69 +269,49 @@ const CodePenScrollAnimation = () => {
                     // Configuración inicial: todos opacos
                     gsap.set(items, { opacity: 0.2, filter: "brightness(1)" });
 
-                    // Para cada palabra, creamos un trigger individual
+                    // Trigger simple para cada palabra
                     items.forEach((item: any) => {
                         ScrollTrigger.create({
                             trigger: item,
-                            start: "center center",
-                            end: "center center",
-                            scrub: true,
-                            markers: false,
-
+                            start: "top 50%",
+                            end: "bottom 50%",
                             onEnter: () => {
                                 gsap.to(item, {
                                     opacity: 1,
                                     filter: "brightness(1.5)",
                                     scale: 1.1,
-                                    duration: 0.2,
+                                    duration: 0.3,
                                     ease: "power2.out"
                                 });
                             },
-
                             onLeave: () => {
                                 gsap.to(item, {
                                     opacity: 0.2,
                                     filter: "brightness(1)",
                                     scale: 1,
-                                    duration: 0.2,
+                                    duration: 0.3,
                                     ease: "power2.out"
                                 });
                             },
-
                             onEnterBack: () => {
                                 gsap.to(item, {
                                     opacity: 1,
                                     filter: "brightness(1.5)",
                                     scale: 1.1,
-                                    duration: 0.2,
+                                    duration: 0.3,
                                     ease: "power2.out"
                                 });
                             },
-
                             onLeaveBack: () => {
                                 gsap.to(item, {
                                     opacity: 0.2,
                                     filter: "brightness(1)",
                                     scale: 1,
-                                    duration: 0.2,
+                                    duration: 0.3,
                                     ease: "power2.out"
                                 });
                             }
                         });
-                    });
-
-                    const textGradient = gsap.timeline()
-                        .to('.gradient-text', {
-                            backgroundPosition: "100% 0%",
-                            ease: "none"
-                        });
-
-                    ScrollTrigger.create({
-                        trigger: ".scroll-container",
-                        start: "top top",
-                        end: "bottom bottom",
-                        animation: textGradient,
-                        scrub: 0.2
                     });
                 });
             });
