@@ -147,21 +147,23 @@ const CodePenScrollAnimation = () => {
                 .scroll-container {
                     position: relative;
                     width: 100%;
-                    height: 200vh; /* Reducido drásticamente */
-                    z-index: 1; /* Reducido para evitar conflictos */
+                    min-height: 100vh;
+                    height: calc(22 * 15vh); /* Reducir la altura para que las palabras estén más juntas */
+                    z-index: 1;
+                    padding-bottom: 5vh;
                 }
                 
                 .sticky-text {
                     position: sticky;
                     top: 50%;
+                    left: 0;
                     transform: translateY(-50%);
                     z-index: 1;
                     width: 50%; /* Ocupa la mitad izquierda */
-                    padding-left: 5rem;
-                    padding-right: 5rem; /* Añadimos padding derecho */
                     display: flex;
-                    align-items: center;
-                    justify-content: flex-end; /* Alineación a la derecha */
+                    justify-content: flex-end; /* Alinea el contenido a la derecha */
+                    padding-right: 2rem; /* Espaciado del borde derecho */
+                    box-sizing: border-box;
                 }
                 
                 .gradient-text {
@@ -177,27 +179,34 @@ const CodePenScrollAnimation = () => {
                 .scrolling-list {
                     position: absolute;
                     top: 0;
-                    left: 50%; /* Empieza en la mitad */
-                    width: 50%; /* Ocupa la mitad derecha */
+                    left: 50%;
+                    width: 50%;
                     height: 100%;
                     display: flex;
                     flex-direction: column;
-                    padding-left: 0; /* Quitamos el padding derecho */
+                    justify-content: center; /* Centra verticalmente los elementos */
+                    padding: 0 0 0 2rem; /* Espaciado del borde izquierdo */
+                    margin: 0;
                     z-index: 2;
+                    pointer-events: none;
+                    overflow: hidden; /* Evita desbordamiento */
+                    box-sizing: border-box;
                 }
                 
                 .scrolling-list li {
-                    height: 100vh;
+                    height: 15vh; /* Reducir la altura para que las palabras estén más juntas */
+                    min-height: 80px; /* Reducir altura mínima */
                     display: flex;
                     align-items: center;
                     justify-content: flex-start; /* Alineación a la izquierda */
                     font-family: 'Geist', sans-serif;
                     font-weight: 600;
-                    font-size: clamp(3rem, 8vw, 6rem); /* Tamaño de letra igual al 'you can' */
+                    font-size: clamp(2.5rem, 7vw, 5.5rem); /* Restaurar tamaño de fuente original */
                     list-style: none;
-                    padding: 0;
+                    padding: 0.25rem 0; /* Reducir padding vertical */
                     margin: 0;
                     opacity: 0.2;
+                    line-height: 1; /* Asegurar que no haya espacio adicional */
                 }
                 
                 /* Colores del arcoíris para cada elemento */
@@ -227,37 +236,8 @@ const CodePenScrollAnimation = () => {
             document.head.appendChild(style);
         }
 
-        // 2. Aplicamos la lógica JS del CodePen (fallback de GSAP)
-        const supportsScrollTimeline = CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)');
-
-        if (supportsScrollTimeline) {
-            // Para navegadores modernos, usamos CSS puro
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
-                    .scrolling-list li {
-                        animation: brighten 1s ease-in-out;
-                        animation-timeline: view();
-                        animation-range: cover 45% cover 55%;
-                    }
-                    
-                    @keyframes brighten {
-                        0%, 100% { 
-                            opacity: 0.2; 
-                            filter: brightness(1); 
-                            transform: scale(1); 
-                        }
-                        50% { 
-                            opacity: 1; 
-                            filter: brightness(1.5); 
-                            transform: scale(1.1); 
-                        }
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        } else {
-            // Fallback para navegadores antiguos
+        // 2. Configuración de la animación con GSAP ScrollTrigger
+        if (typeof window !== 'undefined') {
             import('gsap').then((gsapModule) => {
                 const gsap = gsapModule.default;
                 import('gsap/dist/ScrollTrigger').then((ScrollTriggerModule) => {
@@ -265,53 +245,80 @@ const CodePenScrollAnimation = () => {
                     gsap.registerPlugin(ScrollTrigger);
 
                     const items = gsap.utils.toArray('.scrolling-list li');
+                    const container = containerRef.current;
+                    
+                    if (!container) return;
 
                     // Configuración inicial: todos opacos
-                    gsap.set(items, { opacity: 0.2, filter: "brightness(1)" });
+                    gsap.set(items, { 
+                        opacity: 0.2, 
+                        filter: "brightness(1)",
+                        scale: 1,
+                        willChange: 'opacity, filter, transform'
+                    });
 
-                    // Trigger simple para cada palabra
-                    items.forEach((item: any) => {
-                        ScrollTrigger.create({
-                            trigger: item,
-                            start: "top 50%",
-                            end: "bottom 50%",
-                            onEnter: () => {
-                                gsap.to(item, {
-                                    opacity: 1,
-                                    filter: "brightness(1.5)",
-                                    scale: 1.1,
-                                    duration: 0.3,
-                                    ease: "power2.out"
-                                });
-                            },
-                            onLeave: () => {
-                                gsap.to(item, {
-                                    opacity: 0.2,
-                                    filter: "brightness(1)",
-                                    scale: 1,
-                                    duration: 0.3,
-                                    ease: "power2.out"
-                                });
-                            },
-                            onEnterBack: () => {
-                                gsap.to(item, {
-                                    opacity: 1,
-                                    filter: "brightness(1.5)",
-                                    scale: 1.1,
-                                    duration: 0.3,
-                                    ease: "power2.out"
-                                });
-                            },
-                            onLeaveBack: () => {
-                                gsap.to(item, {
-                                    opacity: 0.2,
-                                    filter: "brightness(1)",
-                                    scale: 1,
-                                    duration: 0.3,
-                                    ease: "power2.out"
+                    // Crear un timeline para la animación
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: container,
+                            start: 'top top',
+                            end: 'bottom bottom',
+                            scrub: 0.5,
+                            pin: false,
+                            anticipatePin: 1,
+                            onUpdate: (self) => {
+                                const progress = self.progress;
+                                const itemHeight = 1 / items.length;
+                                
+                                items.forEach((item: any, index) => {
+                                    const itemStart = index * itemHeight;
+                                    const itemEnd = (index + 1) * itemHeight;
+                                    
+                                    if (progress >= itemStart && progress <= itemEnd) {
+                                        const itemProgress = (progress - itemStart) / itemHeight;
+                                        const opacity = itemProgress < 0.3 ? 0.2 + (itemProgress / 0.3 * 0.8) :
+                                                      itemProgress > 0.7 ? 1 - ((itemProgress - 0.7) / 0.3 * 0.8) : 1;
+                                        const scale = 1 + (0.1 * Math.sin(itemProgress * Math.PI));
+                                        const brightness = 1 + (0.5 * Math.sin(itemProgress * Math.PI));
+                                        
+                                        gsap.to(item, {
+                                            opacity: opacity,
+                                            filter: `brightness(${brightness})`,
+                                            scale: scale,
+                                            duration: 0.1,
+                                            overwrite: true
+                                        });
+                                    } else if (progress < itemStart && index === 0) {
+                                        // Primer elemento antes de comenzar
+                                        gsap.to(item, {
+                                            opacity: 0.2,
+                                            filter: 'brightness(1)',
+                                            scale: 1,
+                                            duration: 0.3,
+                                            overwrite: true
+                                        });
+                                    } else if (progress > itemEnd && index === items.length - 1) {
+                                        // Último elemento después de terminar
+                                        gsap.to(item, {
+                                            opacity: 0.2,
+                                            filter: 'brightness(1)',
+                                            scale: 1,
+                                            duration: 0.3,
+                                            overwrite: true
+                                        });
+                                    } else if (progress < itemStart || progress > itemEnd) {
+                                        // Elementos que no están en la vista
+                                        gsap.to(item, {
+                                            opacity: 0.2,
+                                            filter: 'brightness(1)',
+                                            scale: 1,
+                                            duration: 0.3,
+                                            overwrite: true
+                                        });
+                                    }
                                 });
                             }
-                        });
+                        }
                     });
                 });
             });
@@ -331,10 +338,14 @@ const CodePenScrollAnimation = () => {
             <div className="sticky-text">
                 <h2 ref={h2Ref} className="gradient-text" style={{
                     fontFamily: 'Geist, sans-serif',
-                    fontSize: 'clamp(3rem, 8vw, 6rem)',
+                    fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
                     fontWeight: '600',
                     margin: '0',
-                    display: 'inline-block'
+                    display: 'inline-block',
+                    position: 'sticky',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    willChange: 'transform'  /* Mejora el rendimiento de la animación */
                 }}>
                     <span aria-hidden="true">you can&nbsp;</span>
                     <span className="sr-only">you can ship things.</span>
