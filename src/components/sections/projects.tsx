@@ -22,7 +22,7 @@ const projects = [
         tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
         image: '/images/endmoda-showcase.png',
         githubUrl: 'https://github.com/noomesk/Endmoda',
-        liveUrl: 'https://endmoda.netlify.app',
+        liveUrl: 'https://endmoda.vercel.app/',
     },
     {
         id: 'project-4',
