@@ -49,7 +49,7 @@
     "groq-sdk": "^0.34.0",
     "gsap": "^3.13.0",
     "lucide-react": "^0.475.0",
-    "next": "15.3.3",
+    "next": "16.1.1",
     "nodemailer": "^7.0.10",
     "patch-package": "^8.0.0",
     "react": "^18.3.1",
