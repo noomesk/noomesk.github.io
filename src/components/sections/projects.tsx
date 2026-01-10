@@ -261,9 +261,9 @@ const CodePenScrollAnimation = () => {
                     const tl = gsap.timeline({
                         scrollTrigger: {
                             trigger: container,
-                            start: 'top top',
-                            end: 'bottom bottom',
-                            scrub: 0.5,
+                            start: 'top center',  // Inicio más temprano
+                            end: 'bottom center', // Fin más tardío
+                            scrub: 0.2,
                             pin: false,
                             anticipatePin: 1,
                             onUpdate: (self) => {
@@ -271,8 +271,8 @@ const CodePenScrollAnimation = () => {
                                 const itemHeight = 1 / items.length;
                                 
                                 items.forEach((item: any, index) => {
-                                    const itemStart = index * itemHeight;
-                                    const itemEnd = (index + 1) * itemHeight;
+                                    const itemStart = index * itemHeight;  // Compensar el retraso de 2 palabras
+                                 const itemEnd = (index + 1) * itemHeight;    // Mantener la misma duración
                                     
                                     if (progress >= itemStart && progress <= itemEnd) {
                                         const itemProgress = (progress - itemStart) / itemHeight;
