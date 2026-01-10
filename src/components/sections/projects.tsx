@@ -6,45 +6,45 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { Button } from '@/components/ui/button';
 import { Section } from './section';
 import { Badge } from '@/components/ui/badge';
+// No necesitas PlaceHolderImages si defines la imagen en cada proyecto
+// import { PlaceHolderImages } from '@/lib/placeholder-images'; 
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 
-// --- CAMBIO 1: Aqui act. la información del primer proyecto para que sea EndModa ---
 const projects = [
-  {
-    id: 'project-1',
-    title: 'EndModa',
-    description: 'Frontend de tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
-    tags: ['Next.js', 'Tailwind CSS', 'React', 'Vercel'],
-    image: '/images/endmoda-showcase.png', // <-- CAMBIO 1: Imagen definida aquí
-    githubUrl: 'https://github.com/noomesk/Endmoda',
-    liveUrl: 'https://endmoda.vercel.app/',
-  },
-  {
-    id: 'project-4',
-    title: 'Linux Hardening Toolkit',
-    description: 'Una suite de automatización de ciberseguridad diseñada para analizar y fortalecer sistemas Linux. Ejuta escaneos de puertos, verifica permisos peligrosos, gestiona servicios y genera reportes de seguridad completos.',
-    tags: ['Next.js & React', 'Node.js & Express', 'Python', 'Render & Vercel'],
-    image: '/images/linux-hardening-toolkit.png', // <-- CAMBIO 1: Imagen definida aquí
-    githubUrl: 'https://github.com/noomesk/linux-hardening-toolkit',
-    liveUrl: 'https://linux-hardening-toolkit.vercel.app',
-  },
-  {
-    id: 'project-5',
-    title: 'Genome Cleaner',
-    description: 'Herramienta profesional de bioinformática para validar, limpiar y analizar secuencias genómicas (DNA). Procesa archivos FASTA/FASTQ con detección automática de formato, sanitización de bases inválidas, análisis de contenido GC y generación de reportes completos.',
-    tags: ['Python', 'Streamlit', 'Pandas', 'Biopython'],
-    image: '/images/genome-cleaner.png',
-    githubUrl: 'https://github.com/noomesk/genome-cleaner',
-    liveUrl: 'https://genomecleaner.streamlit.app',
-    // videoUrl: '/videos/genome-cleaner-demo.mp4', // Descomentar cuando se suba el video
-  },
+    {
+        id: 'project-1',
+        title: 'EndModa',
+        description: 'Frontend de tienda de moda online desarrollada con Next.js y Tailwind CSS. Explora colecciones, visualiza productos dinámicamente y disfruta de una experiencia de compra moderna y fluida.',
+        tags: ['Next.js', 'Tailwind CSS', 'React', 'Netlify'],
+        image: '/images/endmoda-showcase.png',
+        githubUrl: 'https://github.com/noomesk/Endmoda',
+        liveUrl: 'https://endmoda.netlify.app',
+    },
+    {
+        id: 'project-4',
+        title: 'Linux Hardening Toolkit',
+        description: 'Una suite de automatización de ciberseguridad diseñada para analizar y fortalecer sistemas Linux. Ejuta escaneos de puertos, verifica permisos peligrosos, gestiona servicios y genera reportes de seguridad completos.',
+        tags: ['Next.js & React', 'Node.js & Express', 'Python', 'Render & Vercel'],
+        image: '/images/linux-hardening-toolkit.png',
+        githubUrl: 'https://github.com/noomesk/linux-hardening-toolkit',
+        liveUrl: 'https://linux-hardening-toolkit.vercel.app',
+    },
+    {
+        id: 'project-5',
+        title: 'Genome Cleaner',
+        description: 'Herramienta profesional de bioinformática para validar, limpiar y analizar secuencias genómicas (DNA). Procesa archivos FASTA/FASTQ con detección automática de formato, sanitización de bases inválidas, análisis de contenido GC y generación de reportes completos.',
+        tags: ['Python', 'Streamlit', 'Pandas', 'Biopython'],
+        image: '/images/genome-cleaner.png',
+        githubUrl: 'https://github.com/noomesk/genome-cleaner',
+        liveUrl: 'https://genomecleaner.streamlit.app',
+        // videoUrl: '/videos/genome-cleaner-demo.mp4', // Descomentar cuando se suba el video
+    },
 ];
 
-// --- CAMBIO 3: Modificación de ProjectCard para que use la imagen específica (public/images) y los enlaces q ponga ---
 const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -75,52 +75,50 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
         };
     }, []);
 
-    // CAMBIO 2: Lógica de imagen simplificada
     // Usa la imagen del proyecto o una por defecto si no existe.
-    const imageSrc = project.image || '/images/placeholder-default.png'; 
+    const imageSrc = project.image || '/images/placeholder-default.png';
 
     return (
-    <Card
-        ref={cardRef}
-        className="flex flex-col overflow-hidden bg-card h-full w-full cursor-pointer"
-    >
-      <CardHeader className="p-0 relative aspect-video">
-        <Image
-          src={imageSrc}
-          alt={`Vista previa de ${project.title}`}
-          fill
-          className="object-cover"
-        />
-      </CardHeader>
-        <>
-          <CardContent className="flex-grow pt-6">
-            <CardTitle className="font-headline text-xl mb-2 uppercase">{project.title}</CardTitle>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.tags.map(tag => (
-                <Badge key={tag} variant="secondary">{tag}</Badge>
-              ))}
-            </div>
-            <CardDescription>{project.description}</CardDescription>
-          </CardContent>
-            <CardFooter className="gap-2 mt-auto">
-                {/* --- CAMBIO 4: Los enlaces ahora son dinámicos o tienen un fallback jejj --- */}
-                <Button asChild className="w-full" variant="outline">
-                <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
-                    <Github className="mr-2" /> GitHub
-                </Link>
-                </Button>
-                <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                <Link href={project.liveUrl || "#"} target="_blank">
-                    <ExternalLink className="mr-2" /> Demo en Vivo
-                </Link>
-                </Button>
-            </CardFooter>
-        </>
-    </Card>
-);
+        <Card
+            ref={cardRef}
+            className="flex flex-col overflow-hidden bg-card h-full w-full cursor-pointer"
+        >
+            <CardHeader className="p-0 relative aspect-video">
+                <Image
+                    src={imageSrc}
+                    alt={`Vista previa de ${project.title}`}
+                    fill
+                    className="object-cover"
+                />
+            </CardHeader>
+            <>
+                <CardContent className="flex-grow pt-6">
+                    <CardTitle className="font-headline text-xl mb-2 uppercase">{project.title}</CardTitle>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tags.map(tag => (
+                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                        ))}
+                    </div>
+                    <CardDescription>{project.description}</CardDescription>
+                </CardContent>
+                <CardFooter className="gap-2 mt-auto">
+                    <Button asChild className="w-full" variant="outline">
+                        <Link href={project.githubUrl || "https://github.com/noomesk"} target="_blank">
+                            <Github className="mr-2" /> GitHub
+                        </Link>
+                    </Button>
+                    <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                        <Link href={project.liveUrl || "#"} target="_blank">
+                            <ExternalLink className="mr-2" /> Demo en Vivo
+                        </Link>
+                    </Button>
+                </CardFooter>
+            </>
+        </Card>
+    );
 };
 
-// --- COMPONENTE DE ANIMACIÓN (SIN CAMBIOS) ---
+// --- COMPONENTE DE ANIMACIÓN ---
 const CodePenScrollAnimation = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const h2Ref = useRef<HTMLHeadingElement>(null);
@@ -149,21 +147,23 @@ const CodePenScrollAnimation = () => {
                 .scroll-container {
                     position: relative;
                     width: 100%;
-                    height: 2200px; /* Altura total para 22 elementos de 100vh cada uno */
-                    z-index: 10; /* <-- CAMBIO CLAVE: Poner la animación por encima de todo */
+                    min-height: 100vh;
+                    height: calc(22 * 15vh); /* Reducir la altura para que las palabras estén más juntas */
+                    z-index: 1;
+                    padding-bottom: 5vh;
                 }
                 
                 .sticky-text {
                     position: sticky;
                     top: 50%;
+                    left: 0;
                     transform: translateY(-50%);
                     z-index: 1;
                     width: 50%; /* Ocupa la mitad izquierda */
-                    padding-left: 5rem;
-                    padding-right: 5rem; /* Añadimos padding derecho */
                     display: flex;
-                    align-items: center;
-                    justify-content: flex-end; /* Alineación a la derecha */
+                    justify-content: flex-end; /* Alinea el contenido a la derecha */
+                    padding-right: 2rem; /* Espaciado del borde derecho */
+                    box-sizing: border-box;
                 }
                 
                 .gradient-text {
@@ -179,27 +179,34 @@ const CodePenScrollAnimation = () => {
                 .scrolling-list {
                     position: absolute;
                     top: 0;
-                    left: 50%; /* Empieza en la mitad */
-                    width: 50%; /* Ocupa la mitad derecha */
+                    left: 50%;
+                    width: 50%;
                     height: 100%;
                     display: flex;
                     flex-direction: column;
-                    padding-left: 0; /* Quitamos el padding derecho */
+                    justify-content: center; /* Centra verticalmente los elementos */
+                    padding: 0 0 0 2rem; /* Espaciado del borde izquierdo */
+                    margin: 0;
                     z-index: 2;
+                    pointer-events: none;
+                    overflow: hidden; /* Evita desbordamiento */
+                    box-sizing: border-box;
                 }
                 
                 .scrolling-list li {
-                    height: 100vh;
+                    height: 15vh; /* Reducir la altura para que las palabras estén más juntas */
+                    min-height: 80px; /* Reducir altura mínima */
                     display: flex;
                     align-items: center;
                     justify-content: flex-start; /* Alineación a la izquierda */
                     font-family: 'Geist', sans-serif;
                     font-weight: 600;
-                    font-size: clamp(3rem, 8vw, 6rem); /* Tamaño de letra igual al 'you can' */
+                    font-size: clamp(2.5rem, 7vw, 5.5rem); /* Restaurar tamaño de fuente original */
                     list-style: none;
-                    padding: 0;
+                    padding: 0.25rem 0; /* Reducir padding vertical */
                     margin: 0;
                     opacity: 0.2;
+                    line-height: 1; /* Asegurar que no haya espacio adicional */
                 }
                 
                 /* Colores del arcoíris para cada elemento */
@@ -229,10 +236,8 @@ const CodePenScrollAnimation = () => {
             document.head.appendChild(style);
         }
 
-        // 2. Aplicamos la lógica JS del CodePen (fallback de GSAP)
-        const supportsScrollTimeline = CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)');
-
-        if (!supportsScrollTimeline) {
+        // 2. Configuración de la animación con GSAP ScrollTrigger
+        if (typeof window !== 'undefined') {
             import('gsap').then((gsapModule) => {
                 const gsap = gsapModule.default;
                 import('gsap/dist/ScrollTrigger').then((ScrollTriggerModule) => {
@@ -240,63 +245,80 @@ const CodePenScrollAnimation = () => {
                     gsap.registerPlugin(ScrollTrigger);
 
                     const items = gsap.utils.toArray('.scrolling-list li');
+                    const container = containerRef.current;
                     
-                    // <-- DEPURACIÓN: Vamos a ver si encuentra los elementos
-                    console.log("GSAP encontró", items.length, "elementos '.scrolling-list li'");
+                    if (!container) return;
 
-                    // Forzamos la primera palabra a estar iluminada para empezar
-                    if (items.length > 0) {
-                        gsap.set(items[0], { opacity: 1, filter: "brightness(1.2)" });
-                    }
-                    
-                    // <-- NUEVO ENFOQUE: Animación maestra con stagger
+                    // Configuración inicial: todos opacos
+                    gsap.set(items, { 
+                        opacity: 0.2, 
+                        filter: "brightness(1)",
+                        scale: 1,
+                        willChange: 'opacity, filter, transform'
+                    });
+
+                    // Crear un timeline para la animación
                     const tl = gsap.timeline({
-                        paused: true
-                    });
-
-                    // Animamos cada elemento para que se ilumine y se apague
-                    items.forEach((item, i) => {
-                        if (i === 0) return; // Ya la configuramos arriba
-                        
-                        tl.to(item, { 
-                            opacity: 1, 
-                            filter: "brightness(1.2)", 
-                            duration: 0.4, 
-                            ease: "power2.inOut"
-                        }, i * 0.1) // Cada palabra empieza 0.1s después de la anterior
-                         .to(item, { 
-                            opacity: 0.2, 
-                            filter: "brightness(1)", 
-                            duration: 0.4, 
-                            ease: "power2.inOut"
-                        }, i * 0.1 + 0.4); // Se apaga 0.4s después de encenderse
-                    });
-
-                    // Conectamos toda la timeline al scroll del contenedor
-                    ScrollTrigger.create({
-                        trigger: ".scroll-container",
-                        start: "top top",
-                        end: "bottom bottom",
-                        scrub: true, // Hace que la animación siga suavemente el scroll
-                        animation: tl,
-                        // <-- DEPURACIÓN: Añadimos callbacks para ver si se activa
-                        onRefresh: () => console.log("ScrollTrigger refrescado"),
-                        onUpdate: (self) => console.log("Progreso del scroll:", self.progress.toFixed(2)),
-                    });
-                    
-                    // Animación para el gradiente del texto (sin cambios)
-                    const textGradient = gsap.timeline()
-                        .to('.gradient-text', {
-                            backgroundPosition: "100% 0%",
-                            ease: "none"
-                        });
-                    
-                    ScrollTrigger.create({
-                        trigger: ".scroll-container",
-                        start: "top top",
-                        end: "bottom bottom",
-                        animation: textGradient,
-                        scrub: 0.2
+                        scrollTrigger: {
+                            trigger: container,
+                            start: 'top center',  // Inicio más temprano
+                            end: 'bottom center', // Fin más tardío
+                            scrub: 0.2,
+                            pin: false,
+                            anticipatePin: 1,
+                            onUpdate: (self) => {
+                                const progress = self.progress;
+                                const itemHeight = 1 / items.length;
+                                
+                                items.forEach((item: any, index) => {
+                                    const itemStart = index * itemHeight;  // Compensar el retraso de 2 palabras
+                                 const itemEnd = (index + 1) * itemHeight;    // Mantener la misma duración
+                                    
+                                    if (progress >= itemStart && progress <= itemEnd) {
+                                        const itemProgress = (progress - itemStart) / itemHeight; //aqui es donde se da el tiempo de latencia o adelanto, es lo único q falta revisar*
+                                        const opacity = itemProgress < 0.3 ? 0.2 + (itemProgress / 0.3 * 0.8) :
+                                                      itemProgress > 0.7 ? 1 - ((itemProgress - 0.7) / 0.3 * 0.8) : 1;
+                                        const scale = 1 + (0.1 * Math.sin(itemProgress * Math.PI));
+                                        const brightness = 1 + (0.5 * Math.sin(itemProgress * Math.PI));
+                                        
+                                        gsap.to(item, {
+                                            opacity: opacity,
+                                            filter: `brightness(${brightness})`,
+                                            scale: scale,
+                                            duration: 0.1,
+                                            overwrite: true
+                                        });
+                                    } else if (progress < itemStart && index === 0) {
+                                        // Primer elemento antes de comenzar
+                                        gsap.to(item, {
+                                            opacity: 0.2,
+                                            filter: 'brightness(1)',
+                                            scale: 1,
+                                            duration: 0.3,
+                                            overwrite: true
+                                        });
+                                    } else if (progress > itemEnd && index === items.length - 1) {
+                                        // Último elemento después de terminar
+                                        gsap.to(item, {
+                                            opacity: 0.2,
+                                            filter: 'brightness(1)',
+                                            scale: 1,
+                                            duration: 0.3,
+                                            overwrite: true
+                                        });
+                                    } else if (progress < itemStart || progress > itemEnd) {
+                                        // Elementos que no están en la vista
+                                        gsap.to(item, {
+                                            opacity: 0.2,
+                                            filter: 'brightness(1)',
+                                            scale: 1,
+                                            duration: 0.3,
+                                            overwrite: true
+                                        });
+                                    }
+                                });
+                            }
+                        }
                     });
                 });
             });
@@ -314,12 +336,16 @@ const CodePenScrollAnimation = () => {
     return (
         <section ref={containerRef} className="scroll-container" style={{ backgroundColor: 'hsl(var(--background))' }}>
             <div className="sticky-text">
-                <h2 ref={h2Ref} className="gradient-text" style={{ 
-                    fontFamily: 'Geist, sans-serif', 
-                    fontSize: 'clamp(3rem, 8vw, 6rem)', 
-                    fontWeight: '600', 
+                <h2 ref={h2Ref} className="gradient-text" style={{
+                    fontFamily: 'Geist, sans-serif',
+                    fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+                    fontWeight: '600',
                     margin: '0',
-                    display: 'inline-block'
+                    display: 'inline-block',
+                    position: 'sticky',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    willChange: 'transform'  /* Mejora el rendimiento de la animación */
                 }}>
                     <span aria-hidden="true">you can&nbsp;</span>
                     <span className="sr-only">you can ship things.</span>
@@ -355,31 +381,31 @@ const CodePenScrollAnimation = () => {
 
 
 export function ProjectsSection() {
- return (
-    <>
-      {/* <-- AQUÍ PONES EL COMPONENTE DE ANIMACIÓN */}
-      <CodePenScrollAnimation />
-      <Section
-        id="projects"
-        title="Proyectos Destacados"
-        description="Aquí hay algunos de los proyectos de los que estoy orgullosa. Cada uno fue un desafío único y una gran experiencia de aprendizaje."
-        className="relative z-10 bg-background"
-      >
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  className={cn("animated-section-element")}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.2, duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
-                >
-                  <ProjectCard project={project} />
-                </motion.div>
-            ))}
-          </div>
-      </Section>
-    </>
-  );
-} 
+    return (
+        <>
+            {/* <-- AQUÍ PONES EL COMPONENTE DE ANIMACIÓN */}
+            <CodePenScrollAnimation />
+            <Section
+                id="projects"
+                title="Proyectos Destacados"
+                description="Aquí hay algunos de los proyectos de los que estoy orgullosa. Cada uno fue un desafío único y una gran experiencia de aprendizaje."
+                className="relative z-10 bg-background"
+            >
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {projects.map((project, index) => (
+                        <motion.div
+                            key={project.id}
+                            className={cn("animated-section-element")}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            transition={{ delay: index * 0.2, duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
+                        >
+                            <ProjectCard project={project} />
+                        </motion.div>
+                    ))}
+                </div>
+            </Section>
+        </>
+    );
+}
