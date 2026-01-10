@@ -22,6 +22,7 @@ export default function ContactForm() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
+    
     setStatus(null);
     try {
       const res = await fetch(action, {
