@@ -2,7 +2,7 @@
 
 This is a Next.js portfolio.
 
-## Desarrollo
+## Desarrollo portafolio nxtjs
 
 ```bash
 npm install
