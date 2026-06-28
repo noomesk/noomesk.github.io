@@ -1,4 +1,4 @@
-# Firebase Studio Portafolio profesional Angie Plazas.
+# Firebase Studio Portafolio profesional me.
 
 This is a Next.js portfolio.
 
